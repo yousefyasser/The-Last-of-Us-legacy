@@ -14,7 +14,10 @@ public abstract class Hero extends Character{
 	
 	public Hero(String name, int maxHp, int attackDmg, int maxActions) {
 		super(name, maxHp, attackDmg);
+		this.maxActions = maxActions;
 		actionsAvailable = maxActions;
+		vaccineInventory = new ArrayList<>();
+		supplyInventory = new ArrayList<>();
 	}
 	
 	public int getActionsAvailable() {

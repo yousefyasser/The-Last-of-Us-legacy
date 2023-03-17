@@ -6,5 +6,4 @@ public class Zombie extends Character{
 	public Zombie() {
 		super("Zombie " + ++ZOMBIES_COUNT, 40, 10);
 	}
-	
 }
