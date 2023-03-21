@@ -3,12 +3,13 @@ package model.world;
 import java.util.Random;
 
 public class TrapCell extends Cell {
-	private Random random;
-	private int trapDamage = (random.nextInt(3)+1) *10;
+	private int trapDamage;
 	
-	public TrapCell(int trapDamage) {
-		this.trapDamage = trapDamage;
+	public TrapCell() {
+		super();
+		this.trapDamage = ((new Random()).nextInt(3)+1) * 10;
 	}
+	
 	public int getTrapDamage() {
 		return trapDamage;
 	}

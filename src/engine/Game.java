@@ -17,7 +17,7 @@ public class Game {
 	public static ArrayList<Zombie> zombies;
 	public static Cell [][] map;
 
-	public static void loadHeros(String line) throws IOException {
+	public static void loadHeroes(String line) throws IOException {
 		
 		BufferedReader br = new BufferedReader(new FileReader("heros.csv"));
 		
