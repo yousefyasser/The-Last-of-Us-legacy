@@ -17,10 +17,17 @@ public class Game {
 	public static ArrayList<Zombie> zombies;
 	public static Cell [][] map;
 
-	public static void loadHeroes(String line) throws IOException {
+	public Game() {
+		availableHeroes = new ArrayList<>();
+		heroes = new ArrayList<>();
+		zombies = new ArrayList<>();
+	}
+	
+	public static void loadHeroes(String filePath) throws IOException {
 		
-		BufferedReader br = new BufferedReader(new FileReader("heros.csv"));
+		BufferedReader br = new BufferedReader(new FileReader(filePath));
 		
+		String line;
 		while ((line = br.readLine()) != null) {  
 			
 			String[] hero = line.split(",");
@@ -29,13 +36,14 @@ public class Game {
 			int attackDmg = Integer.parseInt(hero[4]);
 			int maxActions  = Integer.parseInt(hero[3]);
 		
-		 switch (hero[1]){
-		 case "FIGH": availableHeroes.add(new Fighter(hero[0], maxHP, attackDmg, maxActions));
-		 break;
-		 case "EXP": availableHeroes.add(new Explorer(hero[0], maxHP, attackDmg, maxActions));
-		 break;
-		 case "MED": availableHeroes.add(new Medic(hero[0],  maxHP, attackDmg, maxActions));
+			switch (hero[1]){
+				case "FIGH": availableHeroes.add(new Fighter(hero[0], maxHP, attackDmg, maxActions));
+					break;
+				case "EXP": availableHeroes.add(new Explorer(hero[0], maxHP, attackDmg, maxActions));
+					break;
+				case "MED": availableHeroes.add(new Medic(hero[0],  maxHP, attackDmg, maxActions));
+			}
 		}
 		br.close();
-		}
-}}
+	}
+}
