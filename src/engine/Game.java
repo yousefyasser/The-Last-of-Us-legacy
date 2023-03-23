@@ -4,14 +4,12 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import model.characters.Hero;
-import model.characters.Explorer;
-import model.characters.Fighter;
-import model.characters.Medic;
-import model.characters.Zombie;
+
+import model.characters.*;
 import model.world.Cell;
 
 public class Game {
+	
 	public static ArrayList<Hero> availableHeroes;
 	public static ArrayList<Hero> heroes;
 	public static ArrayList<Zombie> zombies;
@@ -24,26 +22,35 @@ public class Game {
 	}
 	
 	public static void loadHeroes(String filePath) throws IOException {
-		
 		BufferedReader br = new BufferedReader(new FileReader(filePath));
-		
 		String line;
+		Hero h;
+		
 		while ((line = br.readLine()) != null) {  
-			
+			h = null;
 			String[] hero = line.split(",");
 			
 			int maxHP = Integer.parseInt(hero[2]);
-			int attackDmg = Integer.parseInt(hero[4]);
 			int maxActions  = Integer.parseInt(hero[3]);
+			int attackDmg = Integer.parseInt(hero[4]);
 		
 			switch (hero[1]){
-				case "FIGH": availableHeroes.add(new Fighter(hero[0], maxHP, attackDmg, maxActions));
+				case "FIGH": 
+					h = new Fighter(hero[0], maxHP, attackDmg, maxActions);
 					break;
-				case "EXP": availableHeroes.add(new Explorer(hero[0], maxHP, attackDmg, maxActions));
+					
+				case "EXP": 
+					h = new Explorer(hero[0], maxHP, attackDmg, maxActions);
 					break;
-				case "MED": availableHeroes.add(new Medic(hero[0],  maxHP, attackDmg, maxActions));
+					
+				case "MED": 
+					h = new Medic(hero[0],  maxHP, attackDmg, maxActions);
 			}
+			
+			availableHeroes.add(h);
+			
 		}
 		br.close();
 	}
+	
 }

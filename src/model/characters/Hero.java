@@ -6,6 +6,7 @@ import model.collectibles.Supply;
 import model.collectibles.Vaccine;
 
 public abstract class Hero extends Character{
+	
 	private int actionsAvailable;
 	private int maxActions;
 	private boolean specialAction;
@@ -47,4 +48,5 @@ public abstract class Hero extends Character{
 	public ArrayList<Supply> getSupplyInventory() {
 		return supplyInventory;
 	}
+
 }

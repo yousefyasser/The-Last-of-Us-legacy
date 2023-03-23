@@ -7,7 +7,7 @@ public class TrapCell extends Cell {
 	
 	public TrapCell() {
 		super();
-		this.trapDamage = ((new Random()).nextInt(3)+1) * 10;
+		this.trapDamage = ((new Random()).nextInt(3) + 1) * 10;
 	}
 	
 	public int getTrapDamage() {

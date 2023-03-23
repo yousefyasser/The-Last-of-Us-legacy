@@ -3,6 +3,7 @@ package model.characters;
 import java.awt.Point;
 
 public abstract class Character {
+	
 	private String name;
 	private Point location;
 	private int maxHp;
@@ -15,6 +16,7 @@ public abstract class Character {
 		this.maxHp = maxHp;
 		this.attackDmg = attackDmg;
 		this.currentHp = maxHp;
+		this.location = new Point();
 	}
 
 	public String getName() {
@@ -53,4 +55,5 @@ public abstract class Character {
 	public void setTarget(Character target) {
 		this.target = target;
 	}
+
 }
