@@ -3,11 +3,11 @@ package exceptions;
 public class NoAvailableResourcesException extends GameActionException {
 
 	public NoAvailableResourcesException() {
-		super();
+		// TODO Auto-generated constructor stub
 	}
-
-	public NoAvailableResourcesException(String s) {
-		super(s);
+	
+	public NoAvailableResourcesException(String message) {
+		super(message);
 	}
 
 }

@@ -3,11 +3,9 @@ package exceptions;
 public class MovementException extends GameActionException {
 
 	public MovementException() {
-		super();
+		// TODO Auto-generated constructor stub
 	}
-
-	public MovementException(String s) {
-		super(s);
+	public MovementException(String message) {
+		super(message);
 	}
-
 }

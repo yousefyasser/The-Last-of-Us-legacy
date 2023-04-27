@@ -1,23 +1,31 @@
 package model.world;
 
+
+
 public abstract class Cell {
-	
+
+
 	private boolean isVisible;
 	
 	public Cell() {
-		
-	}
 	
-	public Cell(boolean isVisible) {
-		this.isVisible = isVisible;
+		isVisible = false;
+	
 	}
 	
 	public boolean isVisible() {
+	
 		return isVisible;
+	
 	}
 	
 	public void setVisible(boolean isVisible) {
-		this.isVisible = isVisible;
-	}
 	
+		this.isVisible = isVisible;
+	
+	}
+
+
 }
+
+

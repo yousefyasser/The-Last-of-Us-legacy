@@ -3,14 +3,22 @@ package model.world;
 import java.util.Random;
 
 public class TrapCell extends Cell {
+
 	private int trapDamage;
 	
 	public TrapCell() {
-		super();
-		this.trapDamage = ((new Random()).nextInt(3) + 1) * 10;
+		int x [] = {10,20,30};
+ 		Random r = new Random();
+		int result = r.nextInt(3);
+		trapDamage = x[result];
+		
+		
 	}
-	
+
 	public int getTrapDamage() {
 		return trapDamage;
 	}
+	
+
+
 }
