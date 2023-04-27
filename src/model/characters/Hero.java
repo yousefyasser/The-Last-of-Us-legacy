@@ -1,6 +1,8 @@
 package model.characters;
 
 import java.util.ArrayList;
+
+import exceptions.NotEnoughActionsException;
 import model.collectibles.Supply;
 import model.collectibles.Vaccine;
 
@@ -67,10 +69,20 @@ public abstract class Hero extends Character {
 		public ArrayList<Supply> getSupplyInventory() {
 			return supplyInventory;
 		}
-
-
-
 		
+		public void attack()throws NotEnoughActionsException{
+			if(this.actionsAvailable>0){
+			super.attack();
+			this.actionsAvailable--;
+			}
+			else
+				throw new NotEnoughActionsException("Hero does not have enough action points ");
+		}
 
-	
+		//(TO-DO) move method//*Whenever a characte moves to a cell this cell becomes a character cell
+		//and if it is originally a collectiblecell -> pickup the collectible
+		//*throw all kinds of possible exceptions like movementexception
+		//*a character cant move to a cell which has a zombie
+		//*update and check visibility (check Joe vm)
+		
 }
