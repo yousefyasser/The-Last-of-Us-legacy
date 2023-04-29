@@ -19,12 +19,7 @@ public class Game {
 	public static ArrayList <Hero> heroes =  new ArrayList<Hero>();
 	public static ArrayList <Zombie> zombies =  new ArrayList<Zombie>();
 	
-	
-	
-		
 	public static void loadHeroes(String filePath)  throws IOException {
-		
-		
 		BufferedReader br = new BufferedReader(new FileReader(filePath));
 		String line = br.readLine();
 		while (line != null) {
@@ -43,15 +38,7 @@ public class Game {
 			}
 			availableHeroes.add(hero);
 			line = br.readLine();
-			
-			
 		}
 		br.close();
-
-		
-		
 	}
-
-
-
 }

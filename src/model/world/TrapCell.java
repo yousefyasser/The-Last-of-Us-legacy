@@ -11,14 +11,9 @@ public class TrapCell extends Cell {
  		Random r = new Random();
 		int result = r.nextInt(3);
 		trapDamage = x[result];
-		
-		
 	}
 
 	public int getTrapDamage() {
 		return trapDamage;
 	}
-	
-
-
 }

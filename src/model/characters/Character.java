@@ -13,11 +13,9 @@ public abstract class Character {
 	private int attackDmg;
 	private Character target;
 
-	
 	public Character() {
 	}
 	
-
 	public Character(String name, int maxHp, int attackDmg) {
 		this.name=name;
 		this.maxHp = maxHp;
@@ -76,7 +74,6 @@ public abstract class Character {
 		 
 	}
 
-
 	public void defend(Character c) {
 		c.currentHp = c.currentHp - (this.attackDmg/2);
 		if(c.currentHp<=0){
@@ -85,18 +82,16 @@ public abstract class Character {
 		
 	}
 
-
 	public void onCharacterDeath() {
 		if(this instanceof Zombie){
 			Game.zombies.remove(this);
 			((CharacterCell)(Game.map[this.location.y][this.location.x])).setSafe(true);
 			//(TO-DO) in endTurn method ???//spawnNewZombie();
-			
 		}
 		else{
 			Game.heroes.remove(this);
 		}
-		
+		((CharacterCell)(Game.map[this.location.y][this.location.x])).setCharacter(null);
 	}
 
 //public static void main(String[] args) {
