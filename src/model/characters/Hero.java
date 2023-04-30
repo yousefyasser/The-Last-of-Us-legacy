@@ -69,21 +69,22 @@ public abstract class Hero extends Character {
 
 		public void move(Direction d) throws MovementException, NotEnoughActionsException{ 
 			Point newLocation = this.updateLocation(d);
-			if(newLocation.x > 14 || newLocation.x < 0 || newLocation.y > 14 || newLocation.y < 0)
-				throw new MovementException("you can't move outside the boundaries");
-			if(((CharacterCell)(Game.map[newLocation.y][newLocation.x])).getCharacter() != null)
-				throw new MovementException("there is a character in this cell");
+
 			if(this.getActionsAvailable() <= 0)
 				throw new NotEnoughActionsException("you have used all your action points");
+			if(newLocation.x > 14 || newLocation.x < 0 || newLocation.y > 14 || newLocation.y < 0)
+				throw new MovementException("you can't move outside the boundaries");
 			
 			if(Game.map[newLocation.y][newLocation.x] instanceof TrapCell){
 				this.setCurrentHp(this.getCurrentHp() - ((TrapCell)Game.map[newLocation.y][newLocation.x]).getTrapDamage());
 				if(this.getCurrentHp() <= 0)
 					this.onCharacterDeath();
-			}
-			if(Game.map[newLocation.y][newLocation.x] instanceof CollectibleCell)
+			}else if(Game.map[newLocation.y][newLocation.x] instanceof CollectibleCell)
 				((CollectibleCell) (Game.map[newLocation.y][newLocation.x])).getCollectible().pickUp(this);
-
+			else{
+				if(((CharacterCell)(Game.map[newLocation.y][newLocation.x])).getCharacter() != null)
+					throw new MovementException("there is a character in this cell");
+			}
 			((CharacterCell)(Game.map[this.getLocation().y][this.getLocation().x])).setCharacter(null);
 			Game.map[newLocation.y][newLocation.x] = new CharacterCell(this,true);
 			
@@ -94,7 +95,7 @@ public abstract class Hero extends Character {
 		}
 
 		public Point updateLocation(Direction d){
-			Point p = this.getLocation();
+			Point p = new Point(this.getLocation().x,this.getLocation().y);
 			switch(d){
 				case UP: 
 					p.y++;
@@ -116,21 +117,21 @@ public abstract class Hero extends Character {
 
 		public ArrayList<Point> getAdjacentCells(){
 			ArrayList <Point> adj =  new ArrayList<Point>();
-			adj.add(new Point(this.getLocation().x - 1, this.getLocation().y + 1));
-			adj.add(new Point(this.getLocation().x, this.getLocation().y + 1));
-			adj.add(new Point(this.getLocation().x + 1, this.getLocation().y + 1));
-			adj.add(new Point(this.getLocation().x - 1, this.getLocation().y));
-			adj.add(new Point(this.getLocation().x + 1, this.getLocation().y));
-			adj.add(new Point(this.getLocation().x - 1, this.getLocation().y - 1));
-			adj.add(new Point(this.getLocation().x, this.getLocation().y - 1));
-			adj.add(new Point(this.getLocation().x + 1, this.getLocation().y - 1));
+			ArrayList <Point> result =  new ArrayList<Point>();
 
-			for(int i = 0; i < 8; i++){
-				if(adj.get(i).x > 14 || adj.get(i).x < 0 || adj.get(i).y > 14 || adj.get(i).y < 0)
-					adj.remove(i);
+			for(int i = -1; i <= 1; i++){
+				for(int j = -1; j <= 1; j++){
+					if(i != 0 || j != 0)
+						adj.add(new Point(this.getLocation().x + i, this.getLocation().y + j));
+				}
 			}
 
-			return adj;
+			for(int i = 0; i < adj.size(); i++){
+				if(!(adj.get(i).x > 14 || adj.get(i).x < 0 || adj.get(i).y > 14 || adj.get(i).y < 0))
+					result.add(adj.get(i));
+			}
+
+			return result;
 		}
 
 		public void updateMapVisibility(){
