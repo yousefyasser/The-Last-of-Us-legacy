@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import engine.Game;
 
 import java.awt.Point;
+
+import exceptions.InvalidTargetException;
 import exceptions.MovementException;
+import exceptions.NoAvailableResourcesException;
 import exceptions.NotEnoughActionsException;
 import model.collectibles.Supply;
 import model.collectibles.Vaccine;
@@ -58,13 +61,23 @@ public abstract class Hero extends Character {
 			return supplyInventory;
 		}
 		
-		public void attack()throws NotEnoughActionsException{
-			if(this.actionsAvailable>0){
-				super.attack();
-				this.actionsAvailable--;
+		public void attack()throws NotEnoughActionsException, InvalidTargetException{
+			if(this.getTarget() instanceof Zombie && this.getAdjacentCells().contains(this.getTarget().getLocation())){
+				if(this instanceof Fighter && this.isSpecialAction())
+					super.attack();
+				else {
+					if(this.actionsAvailable>0){
+						super.attack();
+						this.actionsAvailable--;
+					}
+					else
+						throw new NotEnoughActionsException("Hero does not have enough action points ");
+				}
 			}
 			else
-				throw new NotEnoughActionsException("Hero does not have enough action points ");
+				throw new InvalidTargetException("You can't attack another hero");
+				
+				
 		}
 
 		public void move(Direction d) throws MovementException, NotEnoughActionsException{ 
@@ -79,7 +92,8 @@ public abstract class Hero extends Character {
 				this.setCurrentHp(this.getCurrentHp() - ((TrapCell)Game.map[newLocation.y][newLocation.x]).getTrapDamage());
 				if(this.getCurrentHp() <= 0)
 					this.onCharacterDeath();
-			}else if(Game.map[newLocation.y][newLocation.x] instanceof CollectibleCell)
+			}
+			else if(Game.map[newLocation.y][newLocation.x] instanceof CollectibleCell)
 				((CollectibleCell) (Game.map[newLocation.y][newLocation.x])).getCollectible().pickUp(this);
 			else{
 				if(((CharacterCell)(Game.map[newLocation.y][newLocation.x])).getCharacter() != null)
@@ -88,12 +102,25 @@ public abstract class Hero extends Character {
 			((CharacterCell)(Game.map[this.getLocation().y][this.getLocation().x])).setCharacter(null);
 			Game.map[newLocation.y][newLocation.x] = new CharacterCell(this,true);
 			
+			updateHeroVisibility();
+			
 			this.setLocation(newLocation);
-			updateMapVisibility();
+			
+			updateHeroVisibility();
+			
 			this.actionsAvailable--;
 
 		}
-
+		
+		public void updateHeroVisibility(){
+			
+			ArrayList<Point> adj = this.getAdjacentCells();
+			for(int i = 0; i < adj.size(); i++){
+				Game.map[adj.get(i).y][adj.get(i).x].setVisible(true);
+			}
+			
+		}
+		
 		public Point updateLocation(Direction d){
 			Point p = new Point(this.getLocation().x,this.getLocation().y);
 			switch(d){
@@ -115,39 +142,38 @@ public abstract class Hero extends Character {
 			return p;
 		}
 
-		public ArrayList<Point> getAdjacentCells(){
-			ArrayList <Point> adj =  new ArrayList<Point>();
-			ArrayList <Point> result =  new ArrayList<Point>();
-
-			for(int i = -1; i <= 1; i++){
-				for(int j = -1; j <= 1; j++){
-					if(i != 0 || j != 0)
-						adj.add(new Point(this.getLocation().x + i, this.getLocation().y + j));
-				}
+		public void useSpecial() throws NoAvailableResourcesException, InvalidTargetException, NotEnoughActionsException{
+			if(!this.isSpecialAction()){
+			if(this.getSupplyInventory().size()>0){
+				this.getSupplyInventory().get(0).use(this);	
 			}
-
-			for(int i = 0; i < adj.size(); i++){
-				if(!(adj.get(i).x > 14 || adj.get(i).x < 0 || adj.get(i).y > 14 || adj.get(i).y < 0))
-					result.add(adj.get(i));
-			}
-
-			return result;
+			else
+				throw new NoAvailableResourcesException("You have no supplies");
 		}
-
-		public void updateMapVisibility(){
-			for(int i = 0; i < 15; i++){
-				for(int j = 0; j < 15; j++){
-					Game.map[i][j].setVisible(false);
-				}
-			}
-
-			for(int j = 0; j < Game.heroes.size(); j++){
-				ArrayList<Point> adj = Game.heroes.get(j).getAdjacentCells();
-				for(int i = 0; i < adj.size(); i++){
-					Game.map[adj.get(i).y][adj.get(i).x].setVisible(true);
-				}
-			}
+			else
+				System.out.println("You already used your special action");
+			
+			this.setSpecialAction(true);
 		}
+		
+		
+		
+		
+		public void cure()throws NoAvailableResourcesException, InvalidTargetException{ //INCOMPLETE
+			if(this.getVaccineInventory().size() > 0){
+				this.getVaccineInventory().get(0).use(this);
+			}
+			else
+				throw new NoAvailableResourcesException("You dont have any Vaccines");
+			
+			
+		}
+		
+		
+		
+		
+		
+		
 		//(TO-DO) move method//*Whenever a character moves to a cell this cell becomes a character cell (DONE)
 		//and if it is originally a collectiblecell -> pickup the collectible (DONE)
 		//*throw all kinds of possible exceptions like movementexception (DONE)

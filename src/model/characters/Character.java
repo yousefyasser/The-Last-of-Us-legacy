@@ -1,9 +1,14 @@
 package model.characters;
 
 import java.awt.Point;
+import java.util.ArrayList;
+
 import engine.Game;
+import exceptions.InvalidTargetException;
 import exceptions.NotEnoughActionsException;
 import model.world.*;
+
+
 
 public abstract class Character {
 	private String name;
@@ -64,7 +69,7 @@ public abstract class Character {
 		return attackDmg;
 	}
 	
-	public void attack()throws NotEnoughActionsException{ //TO-DO : Set target character in move function for Hero & Zombie //
+	public void attack()throws NotEnoughActionsException, InvalidTargetException{ //TO-DO : Set target character in move function for Hero & Zombie //
 		
 		target.currentHp -= this.attackDmg;
 		target.defend(this);
@@ -94,10 +99,22 @@ public abstract class Character {
 		((CharacterCell)(Game.map[this.location.y][this.location.x])).setCharacter(null);
 	}
 
-//public static void main(String[] args) {
-//	Medic x = new Medic("Spider",20,15,5);
-//	x.setLocation(new Point(3,1));
-//	System.out.println(x.getLocation().x);
-//}
+	public ArrayList<Point> getAdjacentCells(){
+		ArrayList <Point> adj =  new ArrayList<Point>();
+		ArrayList <Point> result =  new ArrayList<Point>();
+
+		for(int i = -1; i <= 1; i++){
+			for(int j = -1; j <= 1; j++){
+					adj.add(new Point(this.getLocation().x + i, this.getLocation().y + j));
+			}
+		}
+
+		for(int i = 0; i < adj.size(); i++){
+			if(!(adj.get(i).x > 14 || adj.get(i).x < 0 || adj.get(i).y > 14 || adj.get(i).y < 0))
+				result.add(adj.get(i));
+		}
+
+		return result;
+	}
 	
 }

@@ -1,7 +1,6 @@
 package model.collectibles;
 
 import engine.Game;
-import exceptions.NoAvailableResourcesException;
 import model.characters.Hero;
 import model.world.CharacterCell;
 
@@ -16,12 +15,8 @@ public class Supply implements Collectible  {
 		Game.map[h.getLocation().y][h.getLocation().x] = new CharacterCell(h,true);
 	}
 
-	public void use(Hero h) throws NoAvailableResourcesException{
-		if(h.getSupplyInventory().size() > 0){
+	public void use(Hero h){
 			h.getSupplyInventory().remove(this);
-			h.setSpecialAction(true);
+			h.setSpecialAction(true);		
 		}
-		else
-			throw new NoAvailableResourcesException("Hero does not have any supplies");
-	}
 }

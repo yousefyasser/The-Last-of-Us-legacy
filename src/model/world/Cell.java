@@ -15,6 +15,9 @@ public abstract class Cell {
 	public void setVisible(boolean isVisible) {
 		this.isVisible = isVisible;
 	}
+	public String toString(){
+		return isVisible? "V":"X" ;
+	}
 }
 
 
