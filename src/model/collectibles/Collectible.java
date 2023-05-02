@@ -1,6 +1,5 @@
 package model.collectibles;
 
-import exceptions.NoAvailableResourcesException;
 import model.characters.Hero;
 
 public interface Collectible {

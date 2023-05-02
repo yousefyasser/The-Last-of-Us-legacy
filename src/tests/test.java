@@ -22,7 +22,7 @@ import model.world.TrapCell;
 public class test {
     public static void main(String[] args) throws GameActionException {
 
-		// testing only parts related to move function, didnt test attack and defend yet
+		// testing only parts related to move function, didn't test attack and defend yet
 
 		Medic x1 = new Medic("Spider",40,15,5);
 		x1.setLocation(new Point(0,0));
@@ -65,7 +65,7 @@ public class test {
 //        // testing CollectibleCell
 //        // x.move(Direction.RIGHT);
 //
-//        // check pickup mechanism for collectibles
+//        // check pickup mechanism for collectible
 ////        System.out.println(x.getSupplyInventory());
 //        System.out.println(x.getVaccineInventory());
 		
@@ -74,7 +74,7 @@ public class test {
 		x2.setTarget(z);
 		x2.attack();
 		System.out.println(x2.getCurrentHp() + " " + z.getCurrentHp());
-        // check map visibility (Dont forget to add toString in Cell class)
+        // check map visibility (Don't forget to add toString in Cell class)
         for(int i = 0; i < 15; i++) {
         	for(int j = 0; j < 15; j++) {
         		System.out.print(Game.map[i][j] + " ");

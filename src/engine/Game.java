@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -83,4 +84,8 @@ public class Game {
 			}
 		}
 	}
+//	public static void main(String[] args) throws IOException{
+//		loadHeroes("C:\\Users\\WIN 10\\Desktop\\Heros.csv");
+//		System.out.println(availableHeroes);
+//	}
 }

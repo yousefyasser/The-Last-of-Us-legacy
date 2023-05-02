@@ -87,7 +87,7 @@ public abstract class Character {
 		
 	}
 
-	public void onCharacterDeath() {
+	public void onCharacterDeath() { //when either zombie or hero dies map visibility should 
 		if(this instanceof Zombie){
 			Game.zombies.remove(this);
 			((CharacterCell)(Game.map[this.location.y][this.location.x])).setSafe(true);
