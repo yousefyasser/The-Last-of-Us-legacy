@@ -106,22 +106,16 @@ public abstract class Hero extends Character {
 			Game.map[newLocation.y][newLocation.x] = new CharacterCell(this,true);
 			
 			updateHeroVisibility();
-			
 			this.setLocation(newLocation);
-			
 			updateHeroVisibility();
-			
 			this.actionsAvailable--;
-
 		}
 		
 		public void updateHeroVisibility(){
-			
 			ArrayList<Point> adj = this.getAdjacentCells();
 			for(int i = 0; i < adj.size(); i++){
 				Game.map[adj.get(i).y][adj.get(i).x].setVisible(true);
 			}
-			
 		}
 		
 		public Point updateLocation(Direction d){
@@ -149,20 +143,17 @@ public abstract class Hero extends Character {
 			if(!this.isSpecialAction()){
 				if(this.getSupplyInventory().size()>0){
 					this.getSupplyInventory().get(0).use(this);	
-			}
+				}
 				else
 					throw new NoAvailableResourcesException("You have no supplies");
-		}
+			}
 			else
 				System.out.println("You already used your special action");
 			
 			this.setSpecialAction(true);
 		}
 		
-		
-		
-		
-		public void cure()throws NoAvailableResourcesException, InvalidTargetException, NotEnoughActionsException{ //INCOMPLETE
+		public void cure()throws NoAvailableResourcesException, InvalidTargetException, NotEnoughActionsException{
 			if(this.getVaccineInventory().size() > 0){
 				if(actionsAvailable > 0){
 					if(this.getTarget() instanceof Zombie){
@@ -171,11 +162,12 @@ public abstract class Hero extends Character {
 							int x = r.nextInt(Game.availableHeroes.size());
 							Game.heroes.add(Game.availableHeroes.get(x));
 							Game.availableHeroes.get(x).setLocation(this.getTarget().getLocation());
-							Game.map[this.getTarget().getLocation().y][this.getTarget().getLocation().x] = new CharacterCell(/*(Character)?*/Game.availableHeroes.get(x),true);
-							Game.availableHeroes.remove(x);
-							Game.zombies.remove(this.getTarget());
+							Game.map[this.getTarget().getLocation().y][this.getTarget().getLocation().x] = new CharacterCell(Game.availableHeroes.get(x),true);
+							Game.availableHeroes.get(x).updateHeroVisibility();
 							this.getVaccineInventory().get(0).use(this);
 							actionsAvailable--;
+							Game.availableHeroes.remove(x);
+							Game.zombies.remove(this.getTarget());
 						}
 						else
 							throw new InvalidTargetException("You can only cure zombies in adjacent cells");
@@ -192,14 +184,11 @@ public abstract class Hero extends Character {
 		
 		
 		
-		
-		
-		
 		//(TO-DO) move method//*Whenever a character moves to a cell this cell becomes a character cell (DONE)
 		//and if it is originally a collectiblecell -> pickup the collectible (DONE)
 		//*throw all kinds of possible exceptions like movementexception (DONE)
 		//*a character cant move to a cell which has a zombie (DONE)
 		//*update and check visibility (check Joe vm) (DONE)
-		//TO DO: set target method
+		//TO DO: set target method (DONE)
 		
 }

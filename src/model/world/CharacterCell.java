@@ -32,4 +32,10 @@ public class CharacterCell extends Cell {
 	public void setSafe(boolean isSafe) {
 		this.isSafe = isSafe;
 	}
+	public String toString() {
+		String s = "";
+		s += isVisible()?"(V)": "( )";
+		s += (character != null)?character.getName():"";
+		return s;
+	}
 }

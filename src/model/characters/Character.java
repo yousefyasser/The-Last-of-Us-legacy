@@ -69,7 +69,7 @@ public abstract class Character {
 		return attackDmg;
 	}
 	
-	public void attack()throws NotEnoughActionsException, InvalidTargetException{ //TO-DO : Set target character in move function for Hero & Zombie //
+	public void attack()throws NotEnoughActionsException, InvalidTargetException{
 		
 		target.currentHp -= this.attackDmg;
 		target.defend(this);
@@ -87,14 +87,14 @@ public abstract class Character {
 		
 	}
 
-	public void onCharacterDeath() { //when either zombie or hero dies map visibility should 
+	public void onCharacterDeath() {
 		if(this instanceof Zombie){
 			Game.zombies.remove(this);
 			((CharacterCell)(Game.map[this.location.y][this.location.x])).setSafe(true);
-			//(TO-DO) in endTurn method ???//spawnNewZombie();
 		}
 		else{
 			Game.heroes.remove(this);
+			Game.updateMapVisibility();
 		}
 		((CharacterCell)(Game.map[this.location.y][this.location.x])).setCharacter(null);
 	}
