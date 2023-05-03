@@ -128,8 +128,18 @@ public class Game {
 		return false;
 	}
 
-	// TODO checkWin() and checkGameOver()
+	public static boolean checkGameOver(){
+		return Game.heroes.size() == 0;
+	}
+
 	public static void endTurn() throws NotEnoughActionsException, InvalidTargetException{
+		// heroes reset
+		for(int i = 0; i < Game.heroes.size(); i++){
+			Game.heroes.get(i).setActionsAvailable(Game.heroes.get(i).getMaxActions());
+			Game.heroes.get(i).setSpecialAction(false);
+			Game.heroes.get(i).setTarget(null);
+		}
+		// zombies attack adjacent cells
 		for(int i = 0; i < Game.zombies.size() ;i++){
 			ArrayList <Point> adj = Game.zombies.get(i).getAdjacentCells();
 			ArrayList <Hero> adjHeroes = new ArrayList <Hero>();

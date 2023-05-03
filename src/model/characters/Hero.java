@@ -79,8 +79,11 @@ public abstract class Hero extends Character {
 				else
 					throw new InvalidTargetException("You can only attack zombies in adjacent cells");
 			}
-			else
+			/*testing manually for null pntr exception for method attack in character*/
+			else if(this.getTarget() instanceof Hero)
 				throw new InvalidTargetException("You can't attack another hero");
+			else
+				throw new InvalidTargetException("You must select a valid target first");
 		}
 
 		public void move(Direction d) throws MovementException, NotEnoughActionsException{ 
@@ -182,7 +185,9 @@ public abstract class Hero extends Character {
 				throw new NoAvailableResourcesException("You dont have any Vaccines");
 		}
 		
-		
+		public String toString(){
+			return getName();
+		}
 		
 		//(TO-DO) move method//*Whenever a character moves to a cell this cell becomes a character cell (DONE)
 		//and if it is originally a collectiblecell -> pickup the collectible (DONE)

@@ -34,7 +34,7 @@ public class CharacterCell extends Cell {
 	}
 	public String toString() {
 		String s = "";
-		s += isVisible()?"(V)": "( )";
+		s += isVisible()?"(Visible)": "(X)";
 		s += (character != null)?character.getName():"";
 		return s;
 	}

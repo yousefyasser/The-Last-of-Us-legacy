@@ -75,6 +75,7 @@ public abstract class Character {
 		target.defend(this);
 		if(target.currentHp<=0){
 			 target.onCharacterDeath();
+			/*just for testin manually now*/ this.setTarget(null);
 		}
 		 
 	}
