@@ -92,6 +92,7 @@ public abstract class Character {
 		if(this instanceof Zombie){
 			Game.zombies.remove(this);
 			((CharacterCell)(Game.map[this.location.y][this.location.x])).setSafe(true);
+			Game.spawnZombie();
 		}
 		else{
 			Game.heroes.remove(this);
