@@ -96,23 +96,37 @@ public class test {
 
 
 		Game.loadHeroes("C:\\Users\\OS\\Desktop\\guc coursework\\sem 4\\CS 4 (Game)\\project\\milestone 2\\The-Last-of-Us-legacy-main\\src\\engine\\Heros.csv");
-		Hero h = Game.availableHeroes.get(0);
-		Game.startGame(h);
+		Hero h1 = Game.availableHeroes.get(0);
+		Game.startGame(h1);
 		printMap();
 		String s = "";
 		Scanner sc = new Scanner(System.in);
 		while(!s.equals("end")){
+			System.out.println("Enter hero index: ");
+			int i = Integer.parseInt(sc.nextLine());
+			Hero h = Game.heroes.get(i);
+			System.out.println("Enter command: (enter help for help)");
 			s = sc.nextLine();
+
 			if(s.equals("end")) break;
-			if(s.equals("up")) h.move(Direction.UP);
-			if(s.equals("down")) h.move(Direction.DOWN);
-			if(s.equals("left")) h.move(Direction.LEFT);
-			if(s.equals("right")) h.move(Direction.RIGHT);
-			if(s.equals("attack")) h.attack();
-			if(s.equals("special")) h.useSpecial();
-			if(s.equals("endturn")) Game.endTurn();
+			else if(s.equals("up")) h.move(Direction.UP);
+			else if(s.equals("down")) h.move(Direction.DOWN);
+			else if(s.equals("left")) h.move(Direction.LEFT);
+			else if(s.equals("right")) h.move(Direction.RIGHT);
+			else if(s.equals("attack")) h.attack();
+			else if(s.equals("special")) h.useSpecial();
+			else if(s.equals("endturn")) Game.endTurn();
+			else if(s.equals("cure")) h.cure();
+			else if(s.equals("help")) System.out.println("up, down, left, right, attack, special, endturn, cure, pickup, drop, use, equip, unequip, switch, save, load, help");
+			else {
+				String[] arr = s.split(" ");
+				int x = Integer.parseInt(arr[0]);
+				int y = Integer.parseInt(arr[1]);
+				h.setTarget(((CharacterCell)Game.map[y][x]).getCharacter());
+			}
 			printMap();
 		}
+		sc.close();
 	}
 
 	public static void printMap(){
