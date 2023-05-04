@@ -55,7 +55,6 @@ public class Game {
 		h.setLocation(new Point(0,0));
 		heroes.add(h);
 		availableHeroes.remove(h);
-		map = new Cell[15][15];
 		for(int i = 0; i < 15; i++){
 			for(int j = 0; j < 15; j++){
 				map[i][j] = new CharacterCell(null,true);
@@ -104,6 +103,7 @@ public class Game {
 	public static void updateMapVisibility(){
 		for(int i = 0; i < 15; i++){
 			for(int j = 0; j < 15; j++){
+				if(Game.map[i][j] != null)
 				Game.map[i][j].setVisible(false);
 			}
 		}
@@ -111,6 +111,7 @@ public class Game {
 		for(int j = 0; j < Game.heroes.size(); j++){
 			ArrayList<Point> adj = Game.heroes.get(j).getAdjacentCells();
 			for(int i = 0; i < adj.size(); i++){
+				if(Game.map[i][j] != null)
 				Game.map[adj.get(i).y][adj.get(i).x].setVisible(true);
 			}
 		}

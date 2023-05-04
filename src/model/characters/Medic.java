@@ -15,8 +15,8 @@ public class Medic extends Hero {
 	}
 	public void useSpecial() throws NoAvailableResourcesException,InvalidTargetException,NotEnoughActionsException{
 		super.useSpecial();
-		if(this.getAdjacentCells().contains(this.getTarget().getLocation())) {
-			if(this.getTarget() instanceof Hero){
+		if(this.getTarget() instanceof Hero) {
+			if(this.getAdjacentCells().contains(this.getTarget().getLocation())){
 				this.getTarget().setCurrentHp(this.getTarget().getMaxHp());
 			}
 			else
