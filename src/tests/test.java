@@ -117,7 +117,7 @@ public class test {
 			else if(s.equals("special")) h.useSpecial();
 			else if(s.equals("endturn")) Game.endTurn();
 			else if(s.equals("cure")) h.cure();
-			else if(s.equals("help")) System.out.println("up, down, left, right, attack, special, endturn, cure, pickup, drop, use, equip, unequip, switch, save, load, help");
+			else if(s.equals("help")) System.out.println("up, down, left, right, attack, special, endturn, cure, help");
 			else {
 				String[] arr = s.split(" ");
 				int x = Integer.parseInt(arr[0]);
