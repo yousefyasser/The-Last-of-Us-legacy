@@ -15,10 +15,14 @@ public class Medic extends Hero {
 	}
 	public void useSpecial() throws NoAvailableResourcesException,InvalidTargetException,NotEnoughActionsException{
 		super.useSpecial();
-		if(this.getTarget() instanceof Hero){
-			this.getTarget().setCurrentHp(this.getTarget().getMaxHp());
+		if(this.getAdjacentCells().contains(this.getTarget().getLocation())) {
+			if(this.getTarget() instanceof Hero){
+				this.getTarget().setCurrentHp(this.getTarget().getMaxHp());
+			}
+			else
+				throw new InvalidTargetException("You can't heal a zombie");
 		}
 		else
-			throw new InvalidTargetException("You can't heal a zombie");
+			throw new InvalidTargetException("You can't heal heroes that far away");
 	}
 }

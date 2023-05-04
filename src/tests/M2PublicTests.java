@@ -1889,7 +1889,6 @@ public class M2PublicTests {
 		}
 
 		boolean isAllDead = heroList.size() <= 1;
-
 		assertEquals("All 8 heros around Zombie should be dead after attacking all of them", isAllDead, true);
 	}
 

@@ -23,7 +23,7 @@ import model.world.TrapCell;
 
 public class Game {
 	
-	public static Cell [][] map ;
+	public static Cell [][] map = new Cell[15][15];
 	public static ArrayList <Hero> availableHeroes = new ArrayList<Hero>();
 	public static ArrayList <Hero> heroes =  new ArrayList<Hero>();
 	public static ArrayList <Zombie> zombies =  new ArrayList<Zombie>();
@@ -118,10 +118,17 @@ public class Game {
 
 	public static boolean checkWin(){
 		if(Game.heroes.size() >= 5){
-			for(int i = 0; i < Game.heroes.size(); i++){
-				if(!(Game.heroes.get(i).getVaccineInventory().isEmpty())){
-					return false;
+			for(int i = 0; i < 15; i++) {
+				for(int j = 0; j < 15; j++) {
+					if(Game.map[i][j] instanceof CollectibleCell) {
+						if(((CollectibleCell)(Game.map[i][j])).getCollectible() instanceof Vaccine)
+							return false;
+					}
 				}
+			}
+			for(int i = 0; i < heroes.size(); i++) {
+				if(heroes.get(i).getVaccineInventory().size() > 0)
+					return false;
 			}
 			return true;
 		}
@@ -129,7 +136,22 @@ public class Game {
 	}
 
 	public static boolean checkGameOver(){
-		return Game.heroes.size() == 0;
+		if(Game.heroes.size() < 5) {
+			for(int i = 0; i < 15; i++) {
+				for(int j = 0; j < 15; j++) {
+					if(Game.map[i][j] instanceof CollectibleCell) {
+						if(((CollectibleCell)(Game.map[i][j])).getCollectible() instanceof Vaccine)
+							return false;
+					}
+				}
+			}
+			for(int i = 0; i < heroes.size(); i++) {
+				if(heroes.get(i).getVaccineInventory().size() > 0)
+					return false;
+			}
+			return true;
+		}
+		return false;
 	}
 
 	public static void endTurn() throws NotEnoughActionsException, InvalidTargetException{
@@ -147,15 +169,22 @@ public class Game {
 				if(Game.map[adj.get(j).y][adj.get(j).x] instanceof CharacterCell){
 					if(((CharacterCell)(Game.map[adj.get(j).y][adj.get(j).x])).getCharacter() instanceof Hero)
 						adjHeroes.add((Hero)((CharacterCell)(Game.map[adj.get(j).y][adj.get(j).x])).getCharacter());	
-					}
 				}
-			Random r = new Random();
-			int x = r.nextInt(adjHeroes.size());
-			Game.zombies.get(i).setTarget(adjHeroes.get(x));
-			Game.zombies.get(i).attack();
+			}
+			
+			if(adjHeroes.size() >= 1) {
+				Random r = new Random();
+				int x = r.nextInt(adjHeroes.size());
+				Game.zombies.get(i).setTarget(adjHeroes.get(x));
+				Game.zombies.get(i).attack();
+			}
 		}
-
+		
 		spawnZombie();
 		updateMapVisibility();
+		
+		for(int i = 0; i < zombies.size(); i++) {
+			zombies.get(i).setTarget(null);
+		}
 	}
 }

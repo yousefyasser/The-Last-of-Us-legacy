@@ -70,7 +70,6 @@ public abstract class Character {
 	}
 	
 	public void attack()throws NotEnoughActionsException, InvalidTargetException{
-		
 		target.currentHp -= this.attackDmg;
 		target.defend(this);
 		if(target.currentHp<=0){
@@ -99,6 +98,7 @@ public abstract class Character {
 			Game.updateMapVisibility();
 		}
 		((CharacterCell)(Game.map[this.location.y][this.location.x])).setCharacter(null);
+		
 	}
 
 	public ArrayList<Point> getAdjacentCells(){
