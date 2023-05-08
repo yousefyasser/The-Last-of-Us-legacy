@@ -2356,6 +2356,7 @@ public class M2PublicTests {
 		Method getCurrentHpMethod = characterClass.getMethod("getCurrentHp");
 		int expectedHp = 40 - (attackDamage / 2);
 		int actualHp = (int) getCurrentHpMethod.invoke(character1);
+		
 		assertEquals(expectedHp, actualHp);
 	}
 

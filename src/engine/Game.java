@@ -85,7 +85,7 @@ public class Game {
 		Random r = new Random();
 		int x = r.nextInt(15);
 		int y = r.nextInt(15);
-		while(!(Game.map[x][y] instanceof CharacterCell && ((CharacterCell)Game.map[x][y]).getCharacter() == null)){
+		while(!(map[x][y] instanceof CharacterCell && ((CharacterCell)map[x][y]).getCharacter() == null)){
 			x = r.nextInt(15);
 			y = r.nextInt(15);
 		}
@@ -103,26 +103,26 @@ public class Game {
 	public static void updateMapVisibility(){
 		for(int i = 0; i < 15; i++){
 			for(int j = 0; j < 15; j++){
-				if(Game.map[i][j] != null)
-				Game.map[i][j].setVisible(false);
+				if(map[i][j] != null)
+				map[i][j].setVisible(false);
 			}
 		}
 
-		for(int j = 0; j < Game.heroes.size(); j++){
-			ArrayList<Point> adj = Game.heroes.get(j).getAdjacentCells();
+		for(int j = 0; j < heroes.size(); j++){
+			ArrayList<Point> adj = heroes.get(j).getAdjacentCells();
 			for(int i = 0; i < adj.size(); i++){
-				if(Game.map[i][j] != null)
-				Game.map[adj.get(i).x][adj.get(i).y].setVisible(true);
+				if(map[i][j] != null)
+				map[adj.get(i).x][adj.get(i).y].setVisible(true);
 			}
 		}
 	}
 
 	public static boolean checkWin(){
-		if(Game.heroes.size() >= 5){
+		if(heroes.size() >= 5){
 			for(int i = 0; i < 15; i++) {
 				for(int j = 0; j < 15; j++) {
-					if(Game.map[i][j] instanceof CollectibleCell) {
-						if(((CollectibleCell)(Game.map[i][j])).getCollectible() instanceof Vaccine)
+					if(map[i][j] instanceof CollectibleCell) {
+						if(((CollectibleCell)(map[i][j])).getCollectible() instanceof Vaccine)
 							return false;
 					}
 				}
@@ -137,11 +137,11 @@ public class Game {
 	}
 
 	public static boolean checkGameOver(){
-		if(Game.heroes.size() < 5) {
+		if(heroes.size() < 5) {
 			for(int i = 0; i < 15; i++) {
 				for(int j = 0; j < 15; j++) {
-					if(Game.map[i][j] instanceof CollectibleCell) {
-						if(((CollectibleCell)(Game.map[i][j])).getCollectible() instanceof Vaccine)
+					if(map[i][j] instanceof CollectibleCell) {
+						if(((CollectibleCell)(map[i][j])).getCollectible() instanceof Vaccine)
 							return false;
 					}
 				}
@@ -157,28 +157,14 @@ public class Game {
 
 	public static void endTurn() throws NotEnoughActionsException, InvalidTargetException{
 		// heroes reset
-		for(int i = 0; i < Game.heroes.size(); i++){
-			Game.heroes.get(i).setActionsAvailable(Game.heroes.get(i).getMaxActions());
-			Game.heroes.get(i).setSpecialAction(false);
-			Game.heroes.get(i).setTarget(null);
+		for(int i = 0; i < heroes.size(); i++){
+			heroes.get(i).setActionsAvailable(heroes.get(i).getMaxActions());
+			heroes.get(i).setSpecialAction(false);
+			heroes.get(i).setTarget(null);
 		}
 		// zombies attack adjacent cells
-		for(int i = 0; i < Game.zombies.size() ;i++){
-			ArrayList <Point> adj = Game.zombies.get(i).getAdjacentCells();
-			ArrayList <Hero> adjHeroes = new ArrayList <Hero>();
-			for(int j = 0; j < adj.size() ;j++){
-				if(Game.map[adj.get(j).x][adj.get(j).y] instanceof CharacterCell){
-					if(((CharacterCell)(Game.map[adj.get(j).x][adj.get(j).y])).getCharacter() instanceof Hero)
-						adjHeroes.add((Hero)((CharacterCell)(Game.map[adj.get(j).x][adj.get(j).y])).getCharacter());	
-				}
-			}
-			
-			if(adjHeroes.size() >= 1) {
-				Random r = new Random();
-				int x = r.nextInt(adjHeroes.size());
-				Game.zombies.get(i).setTarget(adjHeroes.get(x));
-				Game.zombies.get(i).attack();
-			}
+		for(int i = 0; i < zombies.size() ;i++){
+			zombies.get(i).attack();
 		}
 		
 		spawnZombie();
