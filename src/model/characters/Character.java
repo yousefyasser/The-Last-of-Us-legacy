@@ -88,16 +88,17 @@ public abstract class Character {
 	}
 
 	public void onCharacterDeath() {
+		this.setCurrentHp(0);
 		if(this instanceof Zombie){
 			Game.zombies.remove(this);
-			((CharacterCell)(Game.map[this.location.y][this.location.x])).setSafe(true);
+			((CharacterCell)(Game.map[this.location.x][this.location.y])).setSafe(true);
 			Game.spawnZombie();
 		}
 		else{
 			Game.heroes.remove(this);
 			Game.updateMapVisibility();
 		}
-		((CharacterCell)(Game.map[this.location.y][this.location.x])).setCharacter(null);
+		((CharacterCell)(Game.map[this.location.x][this.location.y])).setCharacter(null);
 		
 	}
 

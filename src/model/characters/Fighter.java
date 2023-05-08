@@ -1,5 +1,6 @@
 package model.characters;
 
+import engine.Game;
 import exceptions.InvalidTargetException;
 import exceptions.NoAvailableResourcesException;
 import exceptions.NotEnoughActionsException;
@@ -12,6 +13,10 @@ public class Fighter extends Hero{
 	}
 	
 	public void useSpecial() throws NoAvailableResourcesException,NotEnoughActionsException,InvalidTargetException {
-		super.useSpecial();
+		if(!this.isSpecialAction()){
+			super.useSpecial();
+		}
+		else
+			System.out.println("You already used your special action");
 	}
 }

@@ -65,15 +65,15 @@ public class Game {
 
 		for(int i = 0; i < 5; i++){
 			Point p = getRandomEmptyCell();
-			map[p.y][p.x] = new CollectibleCell(new Vaccine());
+			map[p.x][p.y] = new CollectibleCell(new Vaccine());
 		}
 		for(int i = 0; i < 5; i++){
 			Point p = getRandomEmptyCell();
-			map[p.y][p.x] = new CollectibleCell(new Supply());
+			map[p.x][p.y] = new CollectibleCell(new Supply());
 		}
 		for(int i = 0; i < 5; i++){
 			Point p = getRandomEmptyCell();
-			map[p.y][p.x] = new TrapCell();
+			map[p.x][p.y] = new TrapCell();
 		}
 		for(int i = 0; i < 10; i++){
 			spawnZombie();
@@ -85,7 +85,7 @@ public class Game {
 		Random r = new Random();
 		int x = r.nextInt(15);
 		int y = r.nextInt(15);
-		while(!(Game.map[y][x] instanceof CharacterCell && ((CharacterCell)Game.map[y][x]).getCharacter() == null)){
+		while(!(Game.map[x][y] instanceof CharacterCell && ((CharacterCell)Game.map[x][y]).getCharacter() == null)){
 			x = r.nextInt(15);
 			y = r.nextInt(15);
 		}
@@ -96,7 +96,7 @@ public class Game {
 		Point p = getRandomEmptyCell();
 		Zombie z = new Zombie();
 		zombies.add(z);
-		map[p.y][p.x] = new CharacterCell(z, false);
+		map[p.x][p.y] = new CharacterCell(z, false);
 		z.setLocation(p);
 	}
 
@@ -112,7 +112,7 @@ public class Game {
 			ArrayList<Point> adj = Game.heroes.get(j).getAdjacentCells();
 			for(int i = 0; i < adj.size(); i++){
 				if(Game.map[i][j] != null)
-				Game.map[adj.get(i).y][adj.get(i).x].setVisible(true);
+				Game.map[adj.get(i).x][adj.get(i).y].setVisible(true);
 			}
 		}
 	}
@@ -167,9 +167,9 @@ public class Game {
 			ArrayList <Point> adj = Game.zombies.get(i).getAdjacentCells();
 			ArrayList <Hero> adjHeroes = new ArrayList <Hero>();
 			for(int j = 0; j < adj.size() ;j++){
-				if(Game.map[adj.get(j).y][adj.get(j).x] instanceof CharacterCell){
-					if(((CharacterCell)(Game.map[adj.get(j).y][adj.get(j).x])).getCharacter() instanceof Hero)
-						adjHeroes.add((Hero)((CharacterCell)(Game.map[adj.get(j).y][adj.get(j).x])).getCharacter());	
+				if(Game.map[adj.get(j).x][adj.get(j).y] instanceof CharacterCell){
+					if(((CharacterCell)(Game.map[adj.get(j).x][adj.get(j).y])).getCharacter() instanceof Hero)
+						adjHeroes.add((Hero)((CharacterCell)(Game.map[adj.get(j).x][adj.get(j).y])).getCharacter());	
 				}
 			}
 			
