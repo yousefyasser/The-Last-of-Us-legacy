@@ -157,17 +157,8 @@ public abstract class Hero extends Character {
 				if(actionsAvailable > 0){
 					if(this.getTarget() instanceof Zombie){
 						if(this.getAdjacentCells().contains(this.getTarget().getLocation())){
-					 		Random r = new Random();
-							int x = r.nextInt(Game.availableHeroes.size());
-							Game.heroes.add(Game.availableHeroes.get(x));
-							Game.availableHeroes.get(x).setLocation(this.getTarget().getLocation());
-							Game.map[this.getTarget().getLocation().x][this.getTarget().getLocation().y] = new CharacterCell(Game.availableHeroes.get(x),true);
-							Game.availableHeroes.get(x).updateHeroVisibility();
+
 							this.getVaccineInventory().get(0).use(this);
-							actionsAvailable--;
-							Game.availableHeroes.remove(x);
-							Game.zombies.remove(this.getTarget());
-							this.setTarget(null);
 						}
 						else
 							throw new InvalidTargetException("You can only cure zombies in adjacent cells");
