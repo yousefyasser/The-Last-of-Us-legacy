@@ -87,36 +87,48 @@ public abstract class Hero extends Character {
 		}
 
 		public void move(Direction d) throws MovementException, NotEnoughActionsException{ 
-			Point newLocation = this.updateLocation(d);
-
-			if(this.getActionsAvailable() <= 0)
+			if(this.getActionsAvailable() <= 0){
 				throw new NotEnoughActionsException("You have used all your action points");
-			if(newLocation.x > 14 || newLocation.x < 0 || newLocation.y > 14 || newLocation.y < 0)
-				throw new MovementException("You can't move outside the boundaries");
-			if(Game.map[newLocation.x][newLocation.y] instanceof CharacterCell)
-				if(((CharacterCell)(Game.map[newLocation.x][newLocation.y])).getCharacter() != null)
-					throw new MovementException("There is a character in this cell");
-			
-			((CharacterCell)(Game.map[this.getLocation().x][this.getLocation().y])).setCharacter(null);
-			updateHeroVisibility();
-			this.setLocation(newLocation);
-			
-			if(Game.map[newLocation.x][newLocation.y] instanceof TrapCell){
-				this.setCurrentHp(this.getCurrentHp() - ((TrapCell)Game.map[newLocation.x][newLocation.y]).getTrapDamage());
+			}
+			else
+			{
+				Point newLocation = this.updateLocation(d);
 				if(this.getCurrentHp() <= 0) {
-//					Game.map[newLocation.x][newLocation.y] = new CharacterCell(null,true);
-					this.onCharacterDeath();
+					((CharacterCell)(Game.map[this.getLocation().x][this.getLocation().y])).setCharacter(null);
+//					this.setLocation(newLocation);
+//					Game.map[newLocation.x][newLocation.y] = new CharacterCell(this,true);
+//					this.onCharacterDeath();
+					Game.map[newLocation.x][newLocation.y] = new CharacterCell(null,true);
 					return;
 				}	
-			}
-			else if(Game.map[newLocation.x][newLocation.y] instanceof CollectibleCell)
-				((CollectibleCell) (Game.map[newLocation.x][newLocation.y])).getCollectible().pickUp(this);
-			
-			Game.map[newLocation.x][newLocation.y] = new CharacterCell(this,true);
-			
-			
-			updateHeroVisibility();
-			this.actionsAvailable--;
+				if(newLocation.x > 14 || newLocation.x < 0 || newLocation.y > 14 || newLocation.y < 0){
+					throw new MovementException("You can't move outside the boundaries");
+				}
+				if(Game.map[newLocation.x][newLocation.y] instanceof CharacterCell){
+					if(((CharacterCell)(Game.map[newLocation.x][newLocation.y])).getCharacter() != null)
+						throw new MovementException("There is a character in this cell");
+				}
+				if(Game.map[newLocation.x][newLocation.y] instanceof CollectibleCell){
+					((CollectibleCell) (Game.map[newLocation.x][newLocation.y])).getCollectible().pickUp(this);
+				}
+				if(Game.map[newLocation.x][newLocation.y] instanceof TrapCell){
+					this.setCurrentHp(this.getCurrentHp() - ((TrapCell)Game.map[newLocation.x][newLocation.y]).getTrapDamage());
+					if(this.getCurrentHp() <= 0) {
+						((CharacterCell)(Game.map[this.getLocation().x][this.getLocation().y])).setCharacter(null);
+						this.setLocation(newLocation);
+						Game.map[newLocation.x][newLocation.y] = new CharacterCell(this,true);
+						this.onCharacterDeath();
+						Game.map[newLocation.x][newLocation.y] = new CharacterCell(null,true);
+						return;
+					}	
+				}
+				((CharacterCell)(Game.map[this.getLocation().x][this.getLocation().y])).setCharacter(null);
+				Game.map[newLocation.x][newLocation.y] = new CharacterCell(this,true);
+				updateHeroVisibility();
+				this.setLocation(newLocation);
+				updateHeroVisibility();
+				this.actionsAvailable--;
+			}	
 		}
 		
 		public void updateHeroVisibility(){
