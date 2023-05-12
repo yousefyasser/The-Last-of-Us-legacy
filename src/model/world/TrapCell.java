@@ -16,11 +16,4 @@ public class TrapCell extends Cell {
 	public int getTrapDamage() {
 		return trapDamage;
 	}
-	
-	public String toString(){
-		String s = "";
-		s += isVisible()?"(Visible)": "(X)";
-		s += "Trap";
-		return s;
-	}
 }

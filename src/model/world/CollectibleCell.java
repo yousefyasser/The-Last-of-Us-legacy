@@ -14,10 +14,4 @@ public class CollectibleCell extends Cell {
 	public Collectible getCollectible() {
 		return collectible;
 	}
-	public String toString(){
-		String s = "";
-		s += isVisible()?"(Visible)": "(X)";
-		s += (collectible instanceof Vaccine)?"Vaccine":"Supply";
-		return s;
-	}
 }

@@ -1,7 +1,6 @@
 package model.characters;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import engine.Game;
 
@@ -62,15 +61,15 @@ public abstract class Hero extends Character {
 			return supplyInventory;
 		}
 		
-		public void attack()throws NotEnoughActionsException, InvalidTargetException{
-			if(this.getTarget() instanceof Zombie){
-				if(this.getAdjacentCells().contains(this.getTarget().getLocation())){
+		public void attack() throws NotEnoughActionsException, InvalidTargetException{
+			if(getTarget() instanceof Zombie){
+				if(this.getAdjacentCells().contains(getTarget().getLocation())){
 					if(this instanceof Fighter && this.isSpecialAction())
 						super.attack();
 					else {
 						if(this.actionsAvailable>0){
 							super.attack();
-							this.actionsAvailable--;
+							actionsAvailable--;
 						}
 						else
 							throw new NotEnoughActionsException("Hero does not have enough action points ");
@@ -79,25 +78,33 @@ public abstract class Hero extends Character {
 				else
 					throw new InvalidTargetException("You can only attack zombies in adjacent cells");
 			}
-			/*testing manually for null pntr exception for method attack in character*/
-			else if(this.getTarget() instanceof Hero)
+			else if(getTarget() instanceof Hero)
 				throw new InvalidTargetException("You can't attack another hero");
 			else
 				throw new InvalidTargetException("You must select a valid target first");
 		}
+		
+		public void onCharacterDeath() {
+			Game.heroes.remove(this);
+//			Game.updateMapVisibility();
+			
+			// remove the dead hero from the target of all zombies
+			for(int i = 0; i < Game.zombies.size(); i++) {
+				if(Game.zombies.get(i).getTarget() == this)
+					Game.zombies.get(i).setTarget(null);
+			}
+			super.onCharacterDeath();
+		}
 
 		public void move(Direction d) throws MovementException, NotEnoughActionsException{ 
-			if(this.getActionsAvailable() <= 0){
+			if(getActionsAvailable() <= 0){
 				throw new NotEnoughActionsException("You have used all your action points");
 			}
 			else
 			{
-				Point newLocation = this.updateLocation(d);
-				if(this.getCurrentHp() <= 0) {
-					((CharacterCell)(Game.map[this.getLocation().x][this.getLocation().y])).setCharacter(null);
-//					this.setLocation(newLocation);
-//					Game.map[newLocation.x][newLocation.y] = new CharacterCell(this,true);
-//					this.onCharacterDeath();
+				Point newLocation = updateLocation(d);
+				if(getCurrentHp() <= 0) {
+					((CharacterCell)(Game.map[getLocation().x][getLocation().y])).setCharacter(null);
 					Game.map[newLocation.x][newLocation.y] = new CharacterCell(null,true);
 					return;
 				}	
@@ -112,22 +119,22 @@ public abstract class Hero extends Character {
 					((CollectibleCell) (Game.map[newLocation.x][newLocation.y])).getCollectible().pickUp(this);
 				}
 				if(Game.map[newLocation.x][newLocation.y] instanceof TrapCell){
-					this.setCurrentHp(this.getCurrentHp() - ((TrapCell)Game.map[newLocation.x][newLocation.y]).getTrapDamage());
-					if(this.getCurrentHp() <= 0) {
-						((CharacterCell)(Game.map[this.getLocation().x][this.getLocation().y])).setCharacter(null);
-						this.setLocation(newLocation);
-						Game.map[newLocation.x][newLocation.y] = new CharacterCell(this,true);
-						this.onCharacterDeath();
-						Game.map[newLocation.x][newLocation.y] = new CharacterCell(null,true);
-						return;
-					}	
+					setCurrentHp(getCurrentHp() - ((TrapCell)Game.map[newLocation.x][newLocation.y]).getTrapDamage());
+//					if(getCurrentHp() <= 0) {
+//						((CharacterCell)(Game.map[getLocation().x][getLocation().y])).setCharacter(null);
+//						setLocation(newLocation);
+//						Game.map[newLocation.x][newLocation.y] = new CharacterCell(this,true);
+//						onCharacterDeath();
+//						Game.map[newLocation.x][newLocation.y] = new CharacterCell(null,true);
+//						return;
+//					}	
 				}
-				((CharacterCell)(Game.map[this.getLocation().x][this.getLocation().y])).setCharacter(null);
+				((CharacterCell)(Game.map[getLocation().x][getLocation().y])).setCharacter(null);
 				Game.map[newLocation.x][newLocation.y] = new CharacterCell(this,true);
 				updateHeroVisibility();
-				this.setLocation(newLocation);
+				setLocation(newLocation);
 				updateHeroVisibility();
-				this.actionsAvailable--;
+				actionsAvailable--;
 			}	
 		}
 		
@@ -189,16 +196,4 @@ public abstract class Hero extends Character {
 			else
 				throw new NoAvailableResourcesException("You dont have any Vaccines");
 		}
-		
-		public String toString(){
-			return getName();
-		}
-		
-		//(TO-DO) move method//*Whenever a character moves to a cell this cell becomes a character cell (DONE)
-		//and if it is originally a collectiblecell -> pickup the collectible (DONE)
-		//*throw all kinds of possible exceptions like movementexception (DONE)
-		//*a character cant move to a cell which has a zombie (DONE)
-		//*update and check visibility (check Joe vm) (DONE)
-		//TO DO: set target method (DONE)
-		
 }

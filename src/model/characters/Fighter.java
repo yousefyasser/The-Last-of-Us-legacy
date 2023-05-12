@@ -13,7 +13,7 @@ public class Fighter extends Hero{
 	}
 	
 	public void useSpecial() throws NoAvailableResourcesException,NotEnoughActionsException,InvalidTargetException {
-		if(!this.isSpecialAction()){
+		if(!isSpecialAction()){
 			super.useSpecial();
 		}
 		else

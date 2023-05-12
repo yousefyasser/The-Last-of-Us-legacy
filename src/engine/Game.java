@@ -98,6 +98,7 @@ public class Game {
 		zombies.add(z);
 		map[p.x][p.y] = new CharacterCell(z, false);
 		z.setLocation(p);
+		Zombie.ZOMBIES_COUNT++;
 	}
 
 	public static void updateMapVisibility(){
@@ -112,47 +113,33 @@ public class Game {
 			ArrayList<Point> adj = heroes.get(j).getAdjacentCells();
 			for(int i = 0; i < adj.size(); i++){
 				if(map[i][j] != null)
-				map[adj.get(i).x][adj.get(i).y].setVisible(true);
+					map[adj.get(i).x][adj.get(i).y].setVisible(true);
 			}
 		}
 	}
 
 	public static boolean checkWin(){
-		if(heroes.size() >= 5){
-			for(int i = 0; i < 15; i++) {
-				for(int j = 0; j < 15; j++) {
-					if(map[i][j] instanceof CollectibleCell) {
-						if(((CollectibleCell)(map[i][j])).getCollectible() instanceof Vaccine)
-							return false;
-					}
-				}
-			}
-			for(int i = 0; i < heroes.size(); i++) {
-				if(heroes.get(i).getVaccineInventory().size() > 0)
-					return false;
-			}
-			return true;
-		}
-		return false;
+		return heroes.size() >= 5 && allVaccinesCollectedAndUsed();
 	}
 
 	public static boolean checkGameOver(){
-		if(heroes.size() < 5) {
-			for(int i = 0; i < 15; i++) {
-				for(int j = 0; j < 15; j++) {
-					if(map[i][j] instanceof CollectibleCell) {
-						if(((CollectibleCell)(map[i][j])).getCollectible() instanceof Vaccine)
-							return false;
-					}
+		return heroes.size() < 5 && allVaccinesCollectedAndUsed();
+	}
+	
+	public static boolean allVaccinesCollectedAndUsed() {
+		for(int i = 0; i < 15; i++) {
+			for(int j = 0; j < 15; j++) {
+				if(map[i][j] instanceof CollectibleCell) {
+					if(((CollectibleCell)(map[i][j])).getCollectible() instanceof Vaccine)
+						return false;
 				}
 			}
-			for(int i = 0; i < heroes.size(); i++) {
-				if(heroes.get(i).getVaccineInventory().size() > 0)
-					return false;
-			}
-			return true;
 		}
-		return false;
+		for(int i = 0; i < heroes.size(); i++) {
+			if(heroes.get(i).getVaccineInventory().size() > 0)
+				return false;
+		}
+		return true;
 	}
 
 	public static void endTurn() throws NotEnoughActionsException, InvalidTargetException{
