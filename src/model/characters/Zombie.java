@@ -1,54 +1,37 @@
 package model.characters;
 
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.Random;
 
+import model.world.CharacterCell;
 import engine.Game;
 import exceptions.InvalidTargetException;
 import exceptions.NotEnoughActionsException;
-import model.world.CharacterCell;
 
 public class Zombie extends Character {
-	public static int ZOMBIES_COUNT = 1;
-	
+
+	static int ZOMBIES_COUNT;
+
 	public Zombie() {
-		super("Zombie " + ZOMBIES_COUNT, 40, 10);
-		ZOMBIES_COUNT++;
+		super("Zombie " + ++ZOMBIES_COUNT, 40, 10);
 	}
-	
+
 	public void attack() throws NotEnoughActionsException, InvalidTargetException {
-		// set a random hero from adjacent cells of the zombie to be its target
-		
-		ArrayList <Point> adj = this.getAdjacentCells();
-		ArrayList <Hero> adjHeroes = new ArrayList <Hero>();
-		for(int j = 0; j < adj.size() ;j++){
-			if(Game.map[adj.get(j).x][adj.get(j).y] instanceof CharacterCell){
-				if(((CharacterCell)(Game.map[adj.get(j).x][adj.get(j).y])).getCharacter() instanceof Hero)
-					adjHeroes.add((Hero)((CharacterCell)(Game.map[adj.get(j).x][adj.get(j).y])).getCharacter());	
+		Point p = getLocation();
+		for (int i = -1; i <= 1; i++) {
+			int cx = p.x + i;
+			if (cx >= 0 && cx <= 14) {
+				for (int j = -1; j <= 1; j++) {
+					int cy = p.y + j;
+					if (cy >= 0 && cy <= 14) {
+						if (!(i == 0 && j == 0) && Game.map[cx][cy] instanceof CharacterCell
+								&& ((CharacterCell) Game.map[cx][cy]).getCharacter() instanceof Hero) {
+							setTarget(((CharacterCell) Game.map[cx][cy]).getCharacter());
+							super.attack();
+							return;
+						}
+					}
+				}
 			}
 		}
-		
-		if(adjHeroes.size() >= 1) {
-			Random r = new Random();
-			int x = r.nextInt(adjHeroes.size());
-			this.setTarget(adjHeroes.get(x));
-			super.attack();
-		}
-	}
-	
-	public void onCharacterDeath() {
-		Game.zombies.remove(this);
-		((CharacterCell)(Game.map[this.getLocation().x][this.getLocation().y])).setSafe(true);
-		Game.spawnZombie();
-		
-		// remove the dead zombie from target of all heroes
-		for(int i = 0; i < Game.heroes.size(); i++) {
-			if(Game.heroes.get(i).getTarget() == this)
-				Game.heroes.get(i).setTarget(null);
-		}
-		super.onCharacterDeath();
 	}
 }
-
-

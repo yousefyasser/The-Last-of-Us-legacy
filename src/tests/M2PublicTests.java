@@ -1889,6 +1889,7 @@ public class M2PublicTests {
 		}
 
 		boolean isAllDead = heroList.size() <= 1;
+
 		assertEquals("All 8 heros around Zombie should be dead after attacking all of them", isAllDead, true);
 	}
 
@@ -2356,7 +2357,6 @@ public class M2PublicTests {
 		Method getCurrentHpMethod = characterClass.getMethod("getCurrentHp");
 		int expectedHp = 40 - (attackDamage / 2);
 		int actualHp = (int) getCurrentHpMethod.invoke(character1);
-		
 		assertEquals(expectedHp, actualHp);
 	}
 
