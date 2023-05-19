@@ -1,7 +1,6 @@
 package model.collectibles;
 
 import model.characters.Hero;
-import model.characters.Character;
 
 public interface Collectible {
 	
