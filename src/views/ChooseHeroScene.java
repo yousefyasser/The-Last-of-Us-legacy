@@ -21,6 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.text.Font;
 import model.characters.Explorer;
 import model.characters.Fighter;
 import model.characters.Hero;
@@ -38,37 +39,61 @@ public class ChooseHeroScene{
 	public static Scene chooseHeroScene = new Scene(heroes);
     
     public static void setup_chooseHeroScene(){
+
+        // background (needs to be changed) maybe just a blank coloured theme backround
+
         heroes.setBackground(new Background(new BackgroundImage(new Image(Main.resPath + "chooseHeroBg.jpg"), 
         BackgroundRepeat.REPEAT, 
         BackgroundRepeat.NO_REPEAT, 
         new BackgroundPosition(Side.LEFT, 0, true, Side.BOTTOM, 0, true), 
         new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, false, true))));
 
+        // allignment
+
         Main.primaryStage.setFullScreen(true);
-
         heroes.setAlignment(Pos.CENTER);
+        
+        // spacing
 
-        heroes.setSpacing(70);
-        content.setSpacing(300);
+        heroes.setSpacing(50);
+        content.setSpacing(200);
         types.setSpacing(20);
         medic.setSpacing(20);
         explorer.setSpacing(20);
         fighter.setSpacing(20);
         types.setTranslateX(50);
         types.setTranslateY(-20);
+        info.setSpacing(20);
+
+        // fonts
+
+        Font font1 = Font.loadFont(Main.resPath + "mk5style.ttf", 90);
+        Font font2= Font.loadFont(Main.resPath + "mkda.ttf", 40);
+        Font font3 = Font.loadFont(Main.resPath + "mk1.ttf", 35);
+
+        // labels
+
         Label title = new Label("CHOOSE YOUR HERO");
-        title.setStyle("-fx-font-size: 50px; -fx-text-fill: #000000; -fx-font-weight: bold; -fx-font-family: 'Comic Sans MS';");
-        
+        title.setStyle("-fx-text-fill: #ffff00; -fx-font-weight: bold;");
+        title.setFont(font1);
+
         Label heroInfo = new Label();
-        heroInfo.setStyle("-fx-font-size: 20px; -fx-text-fill: #000000; -fx-font-weight: bold; -fx-font-family: 'Comic Sans MS';");
+        heroInfo.setStyle("-fx-text-fill: #000000; -fx-font-weight: bold;");
+        heroInfo.setFont(font3);
 
         Label medicTitle = new Label("Medic");
-        medicTitle.setStyle("-fx-font-size: 30px; -fx-text-fill: #000000; -fx-font-style: italic; -fx-font-family: 'Comic Sans MS';");
-        Label explorerTitle = new Label("Explorer");
-        explorerTitle.setStyle("-fx-font-size: 30px; -fx-text-fill: #000000; -fx-font-style: italic; -fx-font-family: 'Comic Sans MS';");
-        Label fighterTitle = new Label("Fighter");
-        fighterTitle.setStyle("-fx-font-size: 30px; -fx-text-fill: #000000; -fx-font-style: italic; -fx-font-family: 'Comic Sans MS';");
+        medicTitle.setStyle(" -fx-text-fill: #32cd32;");
+        medicTitle.setFont(font2);
 
+        Label explorerTitle = new Label("Explorer");
+        explorerTitle.setStyle(" -fx-text-fill: #00bfff;");
+        explorerTitle.setFont(font2);
+
+        Label fighterTitle = new Label("Fighter");
+        fighterTitle.setStyle(" -fx-text-fill: #ff4500;");
+        fighterTitle.setFont(font2);
+
+        // events
 
         EventHandler<Event> e = new EventHandler<Event>() {
             @Override
@@ -95,15 +120,27 @@ public class ChooseHeroScene{
                 int heroIndx = Integer.parseInt(((Button) (arg0.getSource())).getId());
                 Hero chosenHero = Game.availableHeroes.get(heroIndx);
 
-                String heroData = 	"Type: " + chosenHero.getClass().getSimpleName() +
-									"\nHero Name: " + chosenHero.getName() +
-									"\nHero Health: " + chosenHero.getCurrentHp() + 
-									"\nHero Damage: " + chosenHero.getAttackDmg() + 
+                String heroData = 	//"Type: " + chosenHero.getClass().getSimpleName() +
+									"\n Name: " + chosenHero.getName() +
+									"\n Health: " + chosenHero.getCurrentHp() + 
+									"\n Damage: " + chosenHero.getAttackDmg() + 
 									"\nActions Available: " + chosenHero.getActionsAvailable();
                                                     
                heroInfo.setText(heroData);
                 if(!info.getChildren().contains(heroInfo))
                     info.getChildren().add(heroInfo);
+
+                // preview image of each hero which gonna be used in game board
+
+                Image img = new Image(Main.resPath + chosenHero.getName() + ".jpeg");
+                ImageView view = new ImageView(img);
+                view.setFitWidth(350);
+                view.setFitHeight(300);
+                view.setPreserveRatio(true);
+
+                
+                info.getChildren().add(view);
+                    
             }
         };
 
@@ -117,6 +154,9 @@ public class ChooseHeroScene{
                 info.getChildren().addAll(heroInfo);
             }
         };
+
+
+        // HeroButtons
 
         for(int i = 0; i < Game.availableHeroes.size(); i++) {
             Image img = new Image(Main.resPath + "heroes\\" + Game.availableHeroes.get(i).getName() + ".jpg");
