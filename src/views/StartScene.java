@@ -18,9 +18,10 @@ import javafx.scene.text.Font;
 
 public class StartScene {
     public static VBox root = new VBox();
-    public static Scene startScene = new Scene(root, 700, 500);
+    public static Scene startScene = new Scene(root);
 
     public static void setup_starting_scene(){
+        Main.primaryStage.setFullScreen(true);
         root.setSpacing(25);
         root.setAlignment(Pos.CENTER);
 
@@ -36,9 +37,9 @@ public class StartScene {
             @Override
             public void handle(MouseEvent arg0) {
                 if(((Button)(arg0.getSource())).getText().equals("Start Game")){
-                    Scene1.heroes.getChildren().clear();
-                    Scene1.setup_scene1();
-                    Main.primaryStage.setScene(Scene1.scene1);
+                    ChooseHeroScene.heroes.getChildren().clear();
+                    ChooseHeroScene.setup_chooseHeroScene();
+                    Main.primaryStage.setScene(ChooseHeroScene.chooseHeroScene);
                 }
                 else if(((Button)(arg0.getSource())).getText().equals("Controls")){
                     ControlsScene.controls.getChildren().clear();

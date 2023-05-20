@@ -31,7 +31,7 @@ public class Scene2 {
     public static HBox root2 = new HBox();
     public static GridPane grid = new GridPane();
     public static VBox vbox = new VBox();
-    public static Scene scene2 = new Scene(root2,1200,700);
+    public static Scene scene2 = new Scene(root2);
     public static Button[][] map = new Button[15][15];
 
     public static void draw() {
@@ -47,23 +47,23 @@ public class Scene2 {
 				if(Game.map[14-i][j].isVisible()) {
 					if(Game.map[14-i][j] instanceof CollectibleCell) {
 						if(((CollectibleCell)(Game.map[14-i][j])).getCollectible() instanceof Vaccine) {
-							img = new Image(Main.resPath + "vaccine.jpg");
+							img = new Image(Main.resPath + "vaccine.png");
 						}else {
-							img = new Image(Main.resPath + "supply.jpg");
+							img = new Image(Main.resPath + "supply.png");
 						}
 					}else if(Game.map[14-i][j] instanceof CharacterCell){
 						if(((CharacterCell)(Game.map[14-i][j])).getCharacter() instanceof Zombie) {
-							img = new Image(Main.resPath + "zombie.jpg");
+							img = new Image(Main.resPath + "zombie.png");
 						}else if(((CharacterCell)(Game.map[14-i][j])).getCharacter() instanceof Hero){
-							img = new Image(Main.resPath + "hero.jpg");
+							img = new Image(Main.resPath + "hero.png");
 						}
 					 }
                      else if(Game.map[14-i][j] instanceof TrapCell) {
-						img = new Image(Main.resPath + "trap.jpg");
+						img = new Image(Main.resPath + "trap.png");
 						
 					}
 				}else {
-					img = new Image(Main.resPath + "mystery.jpg");
+					img = new Image(Main.resPath + "mystery.png");
 				}
 
 				view = new ImageView(img);
@@ -159,7 +159,6 @@ public class Scene2 {
                         // }
 
                         if(hpBefore != chosenHero.getCurrentHp()){
-                            System.out.println("hello");
                             // map[14-chosenHero.getLocation().x][chosenHero.getLocation().y].setStyle("-fx-background-color: #ff0000");
                         }
                         count = 0;
@@ -179,6 +178,8 @@ public class Scene2 {
                         // fade.setAutoReverse(true);
                         // fade.setNode(map[14 - chosenHero.getLocation().x][chosenHero.getLocation().y].getGraphic());
                         // fade.play();
+
+                        
 
                         // check if hero is dead -> fade away animation
                     }

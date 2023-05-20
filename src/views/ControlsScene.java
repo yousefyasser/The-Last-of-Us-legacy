@@ -20,7 +20,7 @@ import javafx.scene.text.Font;
 
 public class ControlsScene {
     public static VBox controls = new VBox();
-    public static Scene controls_scene = new Scene(controls, 700, 500);
+    public static Scene controls_scene = new Scene(controls);
 
     public static void setup_controlsScene() {
         controls.setSpacing(20);

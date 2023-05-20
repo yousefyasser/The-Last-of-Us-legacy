@@ -4,6 +4,7 @@ import java.io.File;
 
 import engine.Game;
 import javafx.application.Application;
+import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
@@ -19,10 +20,16 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			Main.primaryStage = primaryStage;
-			primaryStage.setX(0);
-			primaryStage.setY(0);
+			// primaryStage.setX(0);
+			// primaryStage.setY(0);
 			Game.loadHeroes(csvPath + "heros.csv");
+
+			Image icon = new Image(resPath + "icon.jpeg");
+			primaryStage.getIcons().add(icon);
+
 			primaryStage.setTitle("The Last of Us");
+			primaryStage.setFullScreen(true);
+			// primaryStage.setResizable(false);
 
 			// background music
 			String path = csvPath + "\\resources\\bgMusic.mp3";
@@ -35,11 +42,11 @@ public class Main extends Application {
 				}
 			});
 
-			StartScene.setup_starting_scene();
-			primaryStage.setScene(StartScene.startScene);
+			// StartScene.setup_starting_scene();
+			// primaryStage.setScene(StartScene.startScene);
 
-			// Scene1.setup_scene1();
-			// primaryStage.setScene(Scene1.scene1);
+			ChooseHeroScene.setup_chooseHeroScene();
+			primaryStage.setScene(ChooseHeroScene.chooseHeroScene);
 
 			// DO NOT RUN SCENE 2 DIRECTLY
 
