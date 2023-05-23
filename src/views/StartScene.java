@@ -18,7 +18,7 @@ import javafx.scene.text.Font;
 
 public class StartScene {
     public static VBox root = new VBox();
-    public static Scene startScene = new Scene(root);
+    public static Scene startScene = new Scene(root, 1300, 680);
 
     public static void setup_starting_scene(){
         Main.primaryStage.setFullScreen(true);
@@ -40,42 +40,58 @@ public class StartScene {
                     ChooseHeroScene.heroes.getChildren().clear();
                     ChooseHeroScene.setup_chooseHeroScene();
                     Main.primaryStage.setScene(ChooseHeroScene.chooseHeroScene);
-                }
-                else if(((Button)(arg0.getSource())).getText().equals("Controls")){
+                    // Main.primaryStage.setFullScreen(true);
+			        // Main.primaryStage.setFullScreenExitHint("");
+                }else if(((Button)(arg0.getSource())).getText().equals("Rules")){
+                    RulesScene.rules.getChildren().clear();
+                    RulesScene.setup_rulesScene();
+                    Main.primaryStage.setScene(RulesScene.rulesScene);
+                    // Main.primaryStage.setFullScreen(true);
+			        // Main.primaryStage.setFullScreenExitHint("");
+                }else if(((Button)(arg0.getSource())).getText().equals("Controls")){
                     ControlsScene.controls.getChildren().clear();
                     ControlsScene.setup_controlsScene();
                     Main.primaryStage.setScene(ControlsScene.controls_scene);
-                }
-                else if(((Button)(arg0.getSource())).getText().equals("Credits")){
+                    // Main.primaryStage.setFullScreen(true);
+			        // Main.primaryStage.setFullScreenExitHint("");
+                }else if(((Button)(arg0.getSource())).getText().equals("Credits")){
                     // go to credits scene
+                    // Main.primaryStage.setScene(CreditsScene.credits_scene);
+                    // Main.primaryStage.setFullScreen(true);
+			        // Main.primaryStage.setFullScreenExitHint("");
                 }
             }
 
         };
 
         Label title = new Label("The Last of Us");
-        // title.setTranslateX(scene.getWidth() / 2);
-        // title.setTranslateY(50);
         title.setFont(new Font("Arial", 50));
+        title.setFont(Main.font1);
         
         Button startGame = new Button("Start Game");
         startGame.setOnMouseClicked(e);
-        // startGame.setTranslateX(scene.getWidth() / 2);
-        // startGame.setTranslateY(50);
+        startGame.setOnMouseEntered(Main.e);
+        startGame.setOnMouseExited(Main.e2);
         startGame.setPrefSize(200, 50);
+
+        Button rules = new Button("Rules");
+        rules.setOnMouseClicked(e);
+        rules.setOnMouseEntered(Main.e);
+        rules.setOnMouseExited(Main.e2);
+        rules.setPrefSize(200, 50);
         
         Button controls = new Button("Controls");
         controls.setOnMouseClicked(e);
-        // controls.setTranslateX(scene.getWidth() / 2);
-        // controls.setTranslateY(50);
+        controls.setOnMouseEntered(Main.e);
+        controls.setOnMouseExited(Main.e2);
         controls.setPrefSize(200, 50);
         
         Button credits = new Button("Credits");
         credits.setOnMouseClicked(e);
-        // credits.setTranslateX(scene.getWidth() / 2);
-        // credits.setTranslateY(50);
+        credits.setOnMouseEntered(Main.e);
+        credits.setOnMouseExited(Main.e2);
         credits.setPrefSize(200, 50);
         
-        root.getChildren().addAll(title, startGame, controls, credits);
+        root.getChildren().addAll(title, startGame, rules, controls, credits);
     }
 }

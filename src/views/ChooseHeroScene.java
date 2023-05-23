@@ -21,7 +21,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.text.Font;
 import model.characters.Explorer;
 import model.characters.Fighter;
 import model.characters.Hero;
@@ -36,7 +35,10 @@ public class ChooseHeroScene{
     public static HBox medic = new HBox();
     public static HBox explorer = new HBox();
     public static HBox fighter = new HBox();
-	public static Scene chooseHeroScene = new Scene(heroes);
+    public static String path = Main.csvPath + "\\resources\\heroSelect.mp3";
+    public static Media media = new Media(new File(path).toURI().toString());
+    public static MediaPlayer mediaPlayer = new MediaPlayer(media);
+	public static Scene chooseHeroScene = new Scene(heroes, 1300, 680);
     
     public static void setup_chooseHeroScene(){
 
@@ -65,33 +67,27 @@ public class ChooseHeroScene{
         types.setTranslateY(-20);
         info.setSpacing(20);
 
-        // fonts
-
-        Font font1 = Font.loadFont(Main.resPath + "mk5style.ttf", 90);
-        Font font2= Font.loadFont(Main.resPath + "mkda.ttf", 40);
-        Font font3 = Font.loadFont(Main.resPath + "mk1.ttf", 35);
-
         // labels
 
         Label title = new Label("CHOOSE YOUR HERO");
         title.setStyle("-fx-text-fill: #ffff00; -fx-font-weight: bold;");
-        title.setFont(font1);
+        title.setFont(Main.font1);
 
         Label heroInfo = new Label();
         heroInfo.setStyle("-fx-text-fill: #000000; -fx-font-weight: bold;");
-        heroInfo.setFont(font3);
+        heroInfo.setFont(Main.font3);
 
         Label medicTitle = new Label("Medic");
         medicTitle.setStyle(" -fx-text-fill: #32cd32;");
-        medicTitle.setFont(font2);
+        medicTitle.setFont(Main.font2);
 
         Label explorerTitle = new Label("Explorer");
         explorerTitle.setStyle(" -fx-text-fill: #00bfff;");
-        explorerTitle.setFont(font2);
+        explorerTitle.setFont(Main.font2);
 
         Label fighterTitle = new Label("Fighter");
         fighterTitle.setStyle(" -fx-text-fill: #ff4500;");
-        fighterTitle.setFont(font2);
+        fighterTitle.setFont(Main.font2);
 
         // events
 
@@ -104,15 +100,15 @@ public class ChooseHeroScene{
                     Scene2.root2.getChildren().clear();
                     Scene2.setup_scene2();
                     Main.primaryStage.setScene(Scene2.scene2);
+                    // Main.primaryStage.setFullScreen(true);
+			        // Main.primaryStage.setFullScreenExitHint("");
             }
         };
 
         EventHandler<Event> e2 = new EventHandler<Event>() {
             @Override
             public void handle(Event arg0) {
-                String path = Main.csvPath + "\\resources\\heroSelect.mp3";
-                Media media = new Media(new File(path).toURI().toString());
-                MediaPlayer mediaPlayer = new MediaPlayer(media);
+               
                 mediaPlayer.setAutoPlay(true);
 
                 ((Button) (arg0.getSource())).setOpacity(0.8);
@@ -120,8 +116,7 @@ public class ChooseHeroScene{
                 int heroIndx = Integer.parseInt(((Button) (arg0.getSource())).getId());
                 Hero chosenHero = Game.availableHeroes.get(heroIndx);
 
-                String heroData = 	//"Type: " + chosenHero.getClass().getSimpleName() +
-									"\n Name: " + chosenHero.getName() +
+                String heroData = 	"Name: " + chosenHero.getName() +
 									"\n Health: " + chosenHero.getCurrentHp() + 
 									"\n Damage: " + chosenHero.getAttackDmg() + 
 									"\nActions Available: " + chosenHero.getActionsAvailable();
@@ -147,6 +142,8 @@ public class ChooseHeroScene{
         EventHandler<Event> e3 = new EventHandler<Event>() {
             @Override
             public void handle(Event arg0) {
+                mediaPlayer.setAutoPlay(false);
+                mediaPlayer.stop();
                 ((Button) (arg0.getSource())).setOpacity(1);
                 // int heroIndx = Integer.parseInt(((Button) (arg0.getSource())).getId());
                 heroInfo.setText("");
@@ -168,6 +165,7 @@ public class ChooseHeroScene{
             hero.setPrefSize(200, 100);
             hero.setId(i+"");
             hero.setGraphic(view);
+            hero.setStyle("-fx-background-color: transparent;");
 
             if(Game.availableHeroes.get(i) instanceof Medic){
                 medic.getChildren().add(hero);

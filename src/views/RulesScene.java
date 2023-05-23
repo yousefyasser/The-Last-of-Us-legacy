@@ -7,53 +7,41 @@ import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class ControlsScene {
-    public static VBox controls = new VBox();
-    public static Scene controls_scene = new Scene(controls, 1300, 680);
+public class RulesScene {
 
-    public static void setup_controlsScene() {
-        controls.setSpacing(20);
+    public static VBox rules = new VBox();
+    public static Scene rulesScene = new Scene(rules, 1300, 680);
+
+    public static void setup_rulesScene() {
+        rules.setAlignment(Pos.CENTER);
+        rules.setSpacing(30);
 
         // setting background image
-        controls.setAlignment(Pos.CENTER);
-        controls.setBackground(new Background(new BackgroundImage(new Image(Main.resPath + "background.jpg"), 
+        rules.setBackground(new Background(new BackgroundImage(new Image(Main.resPath + "background.jpg"), 
                         BackgroundRepeat.REPEAT, 
                         BackgroundRepeat.NO_REPEAT, 
                         new BackgroundPosition(Side.LEFT, 0, true, Side.BOTTOM, 0, true), 
                         new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, false, true))));
 
-        Label title = new Label("Controls");
+        Label title = new Label("Key Bindings");
         title.setFont(Main.font1);
 
-        // Adjusting volume
-        
-        HBox volInfo = new HBox();
-        volInfo.setAlignment(Pos.CENTER);
-
-        Slider volume = new Slider(0, 100, 50);
-        volume.setMinWidth(50);
-        volume.setMaxWidth(200);
-
-        Label volText = new Label("Volume: 50");
-        volText.setFont(Main.font2);
-        volText.setStyle("-fx-font-size: 20px;");
-        volText.setPrefSize(150, 50);
-        volume.valueProperty().addListener((observable, oldValue, newValue) -> {
-            volText.setText("Volume: " + newValue.intValue());
-            Main.mediaPlayer.setVolume(newValue.intValue() / 100.0);
-        });
-
-        volInfo.getChildren().addAll(volText, volume);
+        String rulesText = "Move: Arrows \n" +
+                           "Set Target: Q \n" +
+                           "Attack: SpaceBar \n" +
+                           "Use Special Action: 1 \n"+
+                           "Cure: C \n" +
+                           "End Turn: E \n";
+        Label rulesLabel = new Label(rulesText);
+        rulesLabel.setFont(Main.font2);
 
         Button back = new Button("Back");
         back.setPrefSize(150, 50);
@@ -69,6 +57,6 @@ public class ControlsScene {
             }
         });
 
-        controls.getChildren().addAll(title, volInfo, back);
+        rules.getChildren().addAll(title, rulesLabel, back);
     }
 }

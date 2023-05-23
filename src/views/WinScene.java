@@ -11,11 +11,10 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 
 public class WinScene {
     public static VBox msg = new VBox();
-    public static Scene winScene = new Scene(msg, 1200, 700);
+    public static Scene winScene = new Scene(msg, 1300, 680);
 
     public static void setup_winScene(){
         msg.setSpacing(25);
@@ -29,7 +28,7 @@ public class WinScene {
                         new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, false, true))));
 
         Label l = new Label("You Win!");
-        l.setFont(new Font("Arial", 50));
+        l.setFont(Main.font1);
 
         msg.getChildren().add(l);
     }

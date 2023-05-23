@@ -11,11 +11,10 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 
 public class GameOverScene {
     public static VBox msg = new VBox();
-    public static Scene gameOverScene = new Scene(msg, 1200, 700);
+    public static Scene gameOverScene = new Scene(msg, 700, 500);
 
     public static void setup_gameOverScene(){
         msg.setSpacing(25);
@@ -29,7 +28,7 @@ public class GameOverScene {
                         new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, false, true))));
 
         Label l = new Label("You Lose");
-        l.setFont(new Font("Arial", 50));
+        l.setFont(Main.font1);
 
         msg.getChildren().add(l);
     }

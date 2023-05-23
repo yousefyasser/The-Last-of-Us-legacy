@@ -2,9 +2,10 @@ package views;
 
 import engine.Game;
 import exceptions.GameActionException;
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import model.characters.Direction;
+import model.characters.Character;
 import model.characters.Hero;
 import model.characters.Zombie;
 import model.collectibles.Vaccine;
@@ -26,17 +27,70 @@ import javafx.scene.layout.VBox;
 public class Scene2 {
 
     public static Hero chosenHero;
+    public static Character chosenTarget;
     public static Label info = new Label();
     public static Label errors = new Label();
     public static HBox root2 = new HBox();
     public static GridPane grid = new GridPane();
     public static VBox vbox = new VBox();
-    public static Scene scene2 = new Scene(root2);
+
+    public static Scene scene2 = new Scene(root2, 1300, 680);
     public static Button[][] map = new Button[15][15];
+    public static Label[] allHeroInfo = new Label[6];
+    public static HBox first2Heroes = new HBox();
+    public static HBox second2Heroes = new HBox();
+    public static HBox final2Heroes = new HBox();
+    public static int counter = 0;
 
     public static void draw() {
-		info.setText("");
-		errors.setText("");
+        info.setText("");
+        errors.setText("");
+        
+        // On click event for each button on grid to show character info
+
+        EventHandler<Event> e = new EventHandler<Event>(){
+
+            @Override
+            public void handle(Event arg0) {
+                int buttonX = GridPane.getColumnIndex((Button)(arg0.getSource()));
+                int buttonY = GridPane.getRowIndex((Button)(arg0.getSource()));
+                Cell cell = Game.map[14-buttonY][buttonX];
+
+                if(cell instanceof CharacterCell){
+                    if(((CharacterCell)(cell)).getCharacter() instanceof Zombie) {
+                        // chosenHero.setTarget((Zombie)((CharacterCell)(cell)).getCharacter());
+                        String zombieInfo = "Zombie Name: " + ((CharacterCell)(cell)).getCharacter().getName() +
+                                            "\nZombie Health: " + ((CharacterCell)(cell)).getCharacter().getCurrentHp() +
+                                            "\nZombie Damage: " + ((CharacterCell)(cell)).getCharacter().getAttackDmg();
+                        info.setText(zombieInfo);
+                    }else if(((CharacterCell)(cell)).getCharacter() instanceof Hero) {
+                        chosenHero = (Hero)(((CharacterCell)(cell)).getCharacter());
+                        getAllHeroesInfo();
+                    }
+                }
+            }
+        };
+
+        // event for setting target
+
+        EventHandler<KeyEvent> e2 = new EventHandler<KeyEvent>() {
+
+            @Override
+            public void handle(KeyEvent ke) {
+                if(ke.getCode() == KeyCode.Q){
+                    int buttonX = GridPane.getColumnIndex((Button)(ke.getSource()));
+                    int buttonY = GridPane.getRowIndex((Button)(ke.getSource()));
+                    Cell cell = Game.map[14-buttonY][buttonX];
+
+                    if(cell instanceof CharacterCell){
+                        chosenTarget = ((CharacterCell)(cell)).getCharacter();
+                        chosenHero.setTarget(chosenTarget);
+                    }
+                }
+            }
+        };
+
+        // place appropriate image on each button in the map
 
 		for(int i = 0; i < 15; i++) {
 			for(int j = 0; j < 15; j++) {
@@ -55,7 +109,13 @@ public class Scene2 {
 						if(((CharacterCell)(Game.map[14-i][j])).getCharacter() instanceof Zombie) {
 							img = new Image(Main.resPath + "zombie.png");
 						}else if(((CharacterCell)(Game.map[14-i][j])).getCharacter() instanceof Hero){
-							img = new Image(Main.resPath + "hero.png");
+							if(counter == 0){
+                                img = new Image(Main.resPath + chosenHero.getName() + ".png");
+                            }
+                            if(counter == 1){
+                                img = new Image(Main.resPath + chosenHero.getName() + "2.png");
+                            }
+                            
 						}
 					 }
                      else if(Game.map[14-i][j] instanceof TrapCell) {
@@ -67,48 +127,71 @@ public class Scene2 {
 				}
 
 				view = new ImageView(img);
-				view.setFitWidth(50);
+				view.setFitWidth(45);
 				view.setFitHeight(35);
-				view.setPreserveRatio(true);
 				map[i][j].setGraphic(view);
-				
-				Cell cell = Game.map[14-i][j];
+				map[i][j].setPrefSize(45, 35);
 
-				map[i][j].setOnAction(new EventHandler<ActionEvent>() {
-					
-					@Override
-					public void handle(ActionEvent event) {
-						if(cell instanceof CharacterCell){
-							if(((CharacterCell)(cell)).getCharacter() instanceof Zombie && cell.isVisible()) {
-								chosenHero.setTarget((Zombie)((CharacterCell)(cell)).getCharacter());
-								String zombieInfo = "Zombie Name: " + ((CharacterCell)(cell)).getCharacter().getName() +
-													"\nZombie Health: " + ((CharacterCell)(cell)).getCharacter().getCurrentHp() +
-													"\nZombie Damage: " + ((CharacterCell)(cell)).getCharacter().getAttackDmg();
-								info.setText(zombieInfo);
-							}else if(((CharacterCell)(cell)).getCharacter() instanceof Hero && cell.isVisible()){
-								chosenHero = (Hero)((CharacterCell)(cell)).getCharacter();
-								String heroInfo = 	"Type: " + chosenHero.getClass().getSimpleName() +
-													"\nHero Name: " + chosenHero.getName() +
-													"\nHero Health: " + chosenHero.getCurrentHp() + 
-													"\nHero Damage: " + chosenHero.getAttackDmg() + 
-													"\nActions Available: " + chosenHero.getActionsAvailable() +
-													"\nSupplies: " + chosenHero.getSupplyInventory().size() +
-													"\nVaccines: " + chosenHero.getVaccineInventory().size();
-								info.setText(heroInfo);
-							}
-						}
-					}
-				});
+				map[i][j].setOnMouseClicked(e);
+                map[i][j].addEventFilter(KeyEvent.KEY_PRESSED, e2);
 
-				map[i][j].setPrefSize(50, 35);
 				grid.add(map[i][j], j, i);
 			}
 		}
+
+        getAllHeroesInfo();
+        
 		if(!vbox.getChildren().contains(info))
-			vbox.getChildren().add(info);
-		if(!vbox.getChildren().contains(errors))
+            vbox.getChildren().add(info);
+        if(!vbox.getChildren().contains(first2Heroes))
+            vbox.getChildren().add(first2Heroes);
+        if(!vbox.getChildren().contains(second2Heroes))
+            vbox.getChildren().add(second2Heroes);
+        if(!vbox.getChildren().contains(final2Heroes))
+            vbox.getChildren().add(final2Heroes);
+        if(!vbox.getChildren().contains(errors))
 			vbox.getChildren().add(errors);
 	}
+
+    public static void getAllHeroesInfo() {
+        first2Heroes.getChildren().clear();
+        second2Heroes.getChildren().clear();
+        final2Heroes.getChildren().clear();
+        int heroIndex = 0;
+
+        String heroInfo = 	"Type: " + chosenHero.getClass().getSimpleName() +
+                            "\nHero Name: " + chosenHero.getName() +
+                            "\nHero Health: " + chosenHero.getCurrentHp() + 
+                            "\nHero Damage: " + chosenHero.getAttackDmg() + 
+                            "\nActions Available: " + chosenHero.getActionsAvailable() +
+                            "\nSupplies: " + chosenHero.getSupplyInventory().size() +
+                            "\nVaccines: " + chosenHero.getVaccineInventory().size() +
+                            "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+        info.setText(heroInfo);
+
+        for(int i = 0; i < Game.heroes.size(); i++){
+            if(chosenHero != Game.heroes.get(i)){
+                heroInfo = 	"Type: " + Game.heroes.get(i).getClass().getSimpleName() +
+                                    "\nHero Name: " + Game.heroes.get(i).getName() +
+                                    "\nHero Health: " + Game.heroes.get(i).getCurrentHp() + 
+                                    "\nHero Damage: " + Game.heroes.get(i).getAttackDmg() + 
+                                    "\nActions Available: " + Game.heroes.get(i).getActionsAvailable();
+
+                allHeroInfo[i] = new Label(heroInfo);
+                allHeroInfo[i].setFont(Main.font4);
+                if(heroIndex < 2){
+                    first2Heroes.getChildren().add(allHeroInfo[i]);
+                    
+                }else if(heroIndex >= 2 && heroIndex < 4){
+                    second2Heroes.getChildren().add(allHeroInfo[i]);
+                   
+                }else{
+                    final2Heroes.getChildren().add(allHeroInfo[i]);
+                }
+                heroIndex++;
+            }
+        }
+    }
 
     public static void setup_scene2(){
         root2.setSpacing(10);
@@ -116,7 +199,14 @@ public class Scene2 {
         root2.getChildren().addAll(Scene2.grid, Scene2.vbox);
         Game.startGame(chosenHero);
         Scene2.draw();
-            
+
+        info.setFont(Main.font3);
+        errors.setFont(Main.font4);
+
+        first2Heroes.setSpacing(10);
+        second2Heroes.setSpacing(10);
+        final2Heroes.setSpacing(10);
+
         scene2.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             int count=0;
             public void handle(KeyEvent ke) {
@@ -134,10 +224,12 @@ public class Scene2 {
                         chosenHero.move(Direction.LEFT);
                         ke.consume();
                         count = 3;
+                        counter = 1;
                     }else if (ke.getCode() == KeyCode.RIGHT) {
                         chosenHero.move(Direction.RIGHT);
                         ke.consume();
                         count = 4;
+                        counter = 0;
                     }else if(ke.getCode() == KeyCode.SPACE) {
                         chosenHero.attack();
                         ke.consume();
@@ -180,7 +272,6 @@ public class Scene2 {
                         // fade.play();
 
                         
-
                         // check if hero is dead -> fade away animation
                     }
                     // if(){
@@ -199,7 +290,7 @@ public class Scene2 {
 
                     draw();
                 }catch(GameActionException e) {
-                    errors.setText(e.getMessage());
+                    errors.setText("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" + e.getMessage());
                 }
             }
         });
