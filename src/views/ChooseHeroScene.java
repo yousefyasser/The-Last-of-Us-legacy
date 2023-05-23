@@ -41,6 +41,7 @@ public class ChooseHeroScene{
 	public static Scene chooseHeroScene = new Scene(heroes, 1300, 680);
     
     public static void setup_chooseHeroScene(){
+        heroes.getChildren().clear();
 
         // background (needs to be changed) maybe just a blank coloured theme backround
 
@@ -52,7 +53,7 @@ public class ChooseHeroScene{
 
         // allignment
 
-        Main.primaryStage.setFullScreen(true);
+        // Main.primaryStage.setFullScreen(true);
         heroes.setAlignment(Pos.CENTER);
         
         // spacing
@@ -97,7 +98,6 @@ public class ChooseHeroScene{
                     int heroIndx = Integer.parseInt(((Button) (arg0.getSource())).getId());
                     Scene2.chosenHero = Game.availableHeroes.get(heroIndx);
 
-                    Scene2.root2.getChildren().clear();
                     Scene2.setup_scene2();
                     Main.primaryStage.setScene(Scene2.scene2);
                     // Main.primaryStage.setFullScreen(true);

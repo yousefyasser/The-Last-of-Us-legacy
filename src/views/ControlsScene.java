@@ -22,6 +22,7 @@ public class ControlsScene {
     public static Scene controls_scene = new Scene(controls, 1300, 680);
 
     public static void setup_controlsScene() {
+        controls.getChildren().clear();
         controls.setSpacing(20);
 
         // setting background image
@@ -61,7 +62,6 @@ public class ControlsScene {
 
             @Override
             public void handle(Event arg0) {
-                StartScene.root.getChildren().clear();
                 StartScene.setup_starting_scene();
                 Main.primaryStage.setScene(StartScene.startScene);
                 // Main.primaryStage.setFullScreen(true);

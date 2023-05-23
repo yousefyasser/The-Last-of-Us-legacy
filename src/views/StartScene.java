@@ -21,7 +21,8 @@ public class StartScene {
     public static Scene startScene = new Scene(root, 1300, 680);
 
     public static void setup_starting_scene(){
-        Main.primaryStage.setFullScreen(true);
+        root.getChildren().clear();
+        // Main.primaryStage.setFullScreen(true);
         root.setSpacing(25);
         root.setAlignment(Pos.CENTER);
 
@@ -37,19 +38,16 @@ public class StartScene {
             @Override
             public void handle(MouseEvent arg0) {
                 if(((Button)(arg0.getSource())).getText().equals("Start Game")){
-                    ChooseHeroScene.heroes.getChildren().clear();
                     ChooseHeroScene.setup_chooseHeroScene();
                     Main.primaryStage.setScene(ChooseHeroScene.chooseHeroScene);
                     // Main.primaryStage.setFullScreen(true);
 			        // Main.primaryStage.setFullScreenExitHint("");
                 }else if(((Button)(arg0.getSource())).getText().equals("Rules")){
-                    RulesScene.rules.getChildren().clear();
                     RulesScene.setup_rulesScene();
                     Main.primaryStage.setScene(RulesScene.rulesScene);
                     // Main.primaryStage.setFullScreen(true);
 			        // Main.primaryStage.setFullScreenExitHint("");
                 }else if(((Button)(arg0.getSource())).getText().equals("Controls")){
-                    ControlsScene.controls.getChildren().clear();
                     ControlsScene.setup_controlsScene();
                     Main.primaryStage.setScene(ControlsScene.controls_scene);
                     // Main.primaryStage.setFullScreen(true);

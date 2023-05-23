@@ -17,6 +17,8 @@ public class GameOverScene {
     public static Scene gameOverScene = new Scene(msg, 700, 500);
 
     public static void setup_gameOverScene(){
+        msg.getChildren().clear();
+        
         msg.setSpacing(25);
         msg.setAlignment(Pos.CENTER);
 

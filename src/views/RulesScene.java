@@ -21,6 +21,8 @@ public class RulesScene {
     public static Scene rulesScene = new Scene(rules, 1300, 680);
 
     public static void setup_rulesScene() {
+        rules.getChildren().clear();
+
         rules.setAlignment(Pos.CENTER);
         rules.setSpacing(30);
 
@@ -49,7 +51,6 @@ public class RulesScene {
 
             @Override
             public void handle(Event arg0) {
-                StartScene.root.getChildren().clear();
                 StartScene.setup_starting_scene();
                 Main.primaryStage.setScene(StartScene.startScene);
                 // Main.primaryStage.setFullScreen(true);

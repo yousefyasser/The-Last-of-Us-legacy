@@ -2,6 +2,8 @@ package views;
 
 import engine.Game;
 import exceptions.GameActionException;
+import javafx.animation.FadeTransition;
+import javafx.animation.PauseTransition;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import model.characters.Direction;
@@ -23,6 +25,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 public class Scene2 {
 
@@ -41,6 +44,7 @@ public class Scene2 {
     public static HBox second2Heroes = new HBox();
     public static HBox final2Heroes = new HBox();
     public static int counter = 0;
+    public static int counter2 = 0;
 
     public static void draw() {
         info.setText("");
@@ -58,7 +62,8 @@ public class Scene2 {
 
                 if(cell instanceof CharacterCell){
                     if(((CharacterCell)(cell)).getCharacter() instanceof Zombie) {
-                        // chosenHero.setTarget((Zombie)((CharacterCell)(cell)).getCharacter());
+                        chosenTarget = (Zombie)((CharacterCell)(cell)).getCharacter();
+                        chosenHero.setTarget(chosenTarget);
                         String zombieInfo = "Zombie Name: " + ((CharacterCell)(cell)).getCharacter().getName() +
                                             "\nZombie Health: " + ((CharacterCell)(cell)).getCharacter().getCurrentHp() +
                                             "\nZombie Damage: " + ((CharacterCell)(cell)).getCharacter().getAttackDmg();
@@ -83,8 +88,10 @@ public class Scene2 {
                     Cell cell = Game.map[14-buttonY][buttonX];
 
                     if(cell instanceof CharacterCell){
-                        chosenTarget = ((CharacterCell)(cell)).getCharacter();
-                        chosenHero.setTarget(chosenTarget);
+                        if(((CharacterCell) cell).getCharacter() instanceof Hero){
+                            chosenTarget = (Hero)(((CharacterCell)(cell)).getCharacter());
+                            chosenHero.setTarget(chosenTarget);
+                        }
                     }
                 }
             }
@@ -109,13 +116,12 @@ public class Scene2 {
 						if(((CharacterCell)(Game.map[14-i][j])).getCharacter() instanceof Zombie) {
 							img = new Image(Main.resPath + "zombie.png");
 						}else if(((CharacterCell)(Game.map[14-i][j])).getCharacter() instanceof Hero){
-							if(counter == 0){
-                                img = new Image(Main.resPath + chosenHero.getName() + ".png");
-                            }
-                            if(counter == 1){
-                                img = new Image(Main.resPath + chosenHero.getName() + "2.png");
-                            }
-                            
+							// if(counter == 0){
+                            //     img = new Image(Main.resPath + chosenHero.getName() + ".png");
+                            // }else if(counter == 1){
+                            //     img = new Image(Main.resPath + chosenHero.getName() + "2.png");
+                            // }
+                            img = new Image(Main.resPath + "hero.png");
 						}
 					 }
                      else if(Game.map[14-i][j] instanceof TrapCell) {
@@ -139,6 +145,32 @@ public class Scene2 {
 			}
 		}
 
+        // Animations
+
+        if(counter2 == 5 && chosenTarget != null){
+            counter2 = 0;
+            Button b = map[14-chosenHero.getLocation().x][chosenHero.getLocation().y];
+            animateDmg(b, 0.5); 
+
+            Button b2 = map[14-chosenTarget.getLocation().x][chosenTarget.getLocation().y];
+            animateDmg(b2, 0.5);
+        }else if(counter2 == 4){
+            counter2 = 0;
+            Button b = map[14-chosenHero.getLocation().x][chosenHero.getLocation().y];
+            animateDmg(b, 0.5); 
+        }else if(counter2 == 3){
+            counter2 = 0;
+            FadeTransition fade = new FadeTransition();
+            fade.setDuration(Duration.millis(1000));
+            fade.setFromValue(10);
+            fade.setToValue(0.1);
+            fade.setCycleCount(1);
+            fade.setAutoReverse(true);
+            fade.setNode(map[14 - chosenHero.getLocation().x][chosenHero.getLocation().y].getGraphic());
+            fade.play();
+        }
+
+
         getAllHeroesInfo();
         
 		if(!vbox.getChildren().contains(info))
@@ -152,6 +184,15 @@ public class Scene2 {
         if(!vbox.getChildren().contains(errors))
 			vbox.getChildren().add(errors);
 	}
+
+    public static void animateDmg(Button b, double duration){
+        b.setStyle("-fx-base: red;");
+        PauseTransition pause = new PauseTransition(Duration.seconds(duration));
+        pause.setOnFinished(event -> {
+            b.setStyle(null);
+        });
+        pause.play();
+    }
 
     public static void getAllHeroesInfo() {
         first2Heroes.getChildren().clear();
@@ -194,11 +235,12 @@ public class Scene2 {
     }
 
     public static void setup_scene2(){
+        root2.getChildren().clear();
         root2.setSpacing(10);
         vbox.setSpacing(20);
-        root2.getChildren().addAll(Scene2.grid, Scene2.vbox);
+        root2.getChildren().addAll(grid, vbox);
         Game.startGame(chosenHero);
-        Scene2.draw();
+        draw();
 
         info.setFont(Main.font3);
         errors.setFont(Main.font4);
@@ -233,6 +275,7 @@ public class Scene2 {
                     }else if(ke.getCode() == KeyCode.SPACE) {
                         chosenHero.attack();
                         ke.consume();
+                        counter2 = 5;
                     }else if(ke.getCode() == KeyCode.DIGIT1) {
                         chosenHero.useSpecial();
                         ke.consume();
@@ -244,46 +287,23 @@ public class Scene2 {
                         chosenHero.cure();
                         ke.consume();
                     }
-                    
-                    if(count!= 0){
-                        // if(Game.map[chosenHero.getLocation().x][chosenHero.getLocation().y] instanceof TrapCell){
-                        //     System.out.println("hello");
-                        // }
-
+                    if(count != 0){
                         if(hpBefore != chosenHero.getCurrentHp()){
-                            // map[14-chosenHero.getLocation().x][chosenHero.getLocation().y].setStyle("-fx-background-color: #ff0000");
+                            counter2 = 4;
                         }
                         count = 0;
                     }
-                    // if(){
-                    //     Animate Zombie Damage
-                    // }
-                    // if(){
-                    //     Animate Hero Damage
-                    // }
                     if(chosenHero.getCurrentHp() <= 0){
-                        // FadeTransition fade = new FadeTransition();
-                        // fade.setDuration(Duration.millis(1000));
-                        // fade.setFromValue(10);
-                        // fade.setToValue(0.1);
-                        // fade.setCycleCount(1000);
-                        // fade.setAutoReverse(true);
-                        // fade.setNode(map[14 - chosenHero.getLocation().x][chosenHero.getLocation().y].getGraphic());
-                        // fade.play();
-
-                        
-                        // check if hero is dead -> fade away animation
+                        counter2 = 3;
                     }
                     // if(){
                     //         check if zombie is dead -> fade away animation
                     // }
                     if(Game.checkGameOver()){
-                        GameOverScene.msg.getChildren().clear();
                         GameOverScene.setup_gameOverScene();
                         Main.primaryStage.setScene(GameOverScene.gameOverScene);
                     }
                     if(Game.checkWin()){
-                        WinScene.msg.getChildren().clear();
                         WinScene.setup_winScene();
                         Main.primaryStage.setScene(WinScene.winScene);
                     }

@@ -17,6 +17,8 @@ public class WinScene {
     public static Scene winScene = new Scene(msg, 1300, 680);
 
     public static void setup_winScene(){
+        msg.getChildren().clear();
+        
         msg.setSpacing(25);
         msg.setAlignment(Pos.CENTER);
 
