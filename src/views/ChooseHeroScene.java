@@ -76,7 +76,7 @@ public class ChooseHeroScene{
 
         Label heroInfo = new Label();
         heroInfo.setStyle("-fx-text-fill: #000000; -fx-font-weight: bold;");
-        heroInfo.setFont(Main.font3);
+        heroInfo.setFont(Main.font5);
 
         Label medicTitle = new Label("Medic");
         medicTitle.setStyle(" -fx-text-fill: #32cd32;");
@@ -117,8 +117,8 @@ public class ChooseHeroScene{
                 Hero chosenHero = Game.availableHeroes.get(heroIndx);
 
                 String heroData = 	"Name: " + chosenHero.getName() +
-									"\n Health: " + chosenHero.getCurrentHp() + 
-									"\n Damage: " + chosenHero.getAttackDmg() + 
+									"\nHealth: " + chosenHero.getCurrentHp() + 
+									"\nDamage: " + chosenHero.getAttackDmg() + 
 									"\nActions Available: " + chosenHero.getActionsAvailable();
                                                     
                heroInfo.setText(heroData);

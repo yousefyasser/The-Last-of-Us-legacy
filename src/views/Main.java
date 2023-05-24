@@ -15,14 +15,15 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class Main extends Application {
-	public static final String csvPath = "C:\\Users\\OS\\Desktop\\guc coursework\\sem 4\\CS 4 (Game)\\project\\milestone 3\\src\\engine\\";
+	public static final String csvPath = "D:\\CMS SEM 4 SEIF (MET)\\(CSEN401) Computer Programming Lab\\GAME\\Milestone 3\\Working\\The-Last-of-Us-legacy-main\\src\\engine\\";
 	public static final String resPath = "file:\\" + csvPath + "resources\\";
 	public static Stage primaryStage;
 	public static MediaPlayer mediaPlayer;
 	public static Font font1 = Font.loadFont(Main.resPath + "mk5style.ttf", 90);
-	public static Font font2= Font.loadFont(Main.resPath + "mkda.ttf", 40);
+	public static Font font2 = Font.loadFont(Main.resPath + "mkda.ttf", 40);
 	public static Font font3 = Font.loadFont(Main.resPath + "mk1.ttf", 25);
 	public static Font font4 = Font.loadFont(Main.resPath + "mk1.ttf", 18);
+	public static Font font5 = Font.loadFont(Main.resPath + "MK4.TTF", 30);
 	public static EventHandler<Event> e;
 	public static EventHandler<Event> e2;
 
@@ -61,6 +62,7 @@ public class Main extends Application {
 			Media media = new Media(new File(path).toURI().toString());
 			mediaPlayer = new MediaPlayer(media);
 			mediaPlayer.setAutoPlay(true);
+			mediaPlayer.setVolume(0.1);
 			mediaPlayer.setOnEndOfMedia(new Runnable() {
 				public void run() {
 				  mediaPlayer.seek(Duration.ZERO);

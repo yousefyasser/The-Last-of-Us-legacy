@@ -21,9 +21,9 @@ public class Medic extends Hero {
 				super.useSpecial();
 			}
 			else
-				throw new InvalidTargetException("You can't heal a zombie");
+				throw new InvalidTargetException("You can't heal heroes that far away");
 		}
 		else
-			throw new InvalidTargetException("You can't heal heroes that far away");
+			throw new InvalidTargetException("You can't heal a zombie");
 	}
 }

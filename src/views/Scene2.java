@@ -1,5 +1,7 @@
 package views;
 
+import java.io.File;
+
 import engine.Game;
 import exceptions.GameActionException;
 import javafx.animation.FadeTransition;
@@ -9,6 +11,7 @@ import javafx.event.EventHandler;
 import model.characters.Direction;
 import model.characters.Character;
 import model.characters.Hero;
+import model.characters.Medic;
 import model.characters.Zombie;
 import model.collectibles.Vaccine;
 import model.world.Cell;
@@ -18,13 +21,18 @@ import model.world.TrapCell;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 public class Scene2 {
@@ -36,6 +44,9 @@ public class Scene2 {
     public static HBox root2 = new HBox();
     public static GridPane grid = new GridPane();
     public static VBox vbox = new VBox();
+    
+    public static ProgressBar heroHpBar = new ProgressBar();
+    public static ProgressBar zombieHpBar = new ProgressBar();
 
     public static Scene scene2 = new Scene(root2, 1300, 680);
     public static Button[][] map = new Button[15][15];
@@ -44,58 +55,27 @@ public class Scene2 {
     public static HBox second2Heroes = new HBox();
     public static HBox final2Heroes = new HBox();
     public static int counter = 0;
-    public static int counter2 = 0;
+    public static int animationCounter = 0;
 
     public static void draw() {
         info.setText("");
         errors.setText("");
         
-        // On click event for each button on grid to show character info
-
-        EventHandler<Event> e = new EventHandler<Event>(){
-
-            @Override
-            public void handle(Event arg0) {
-                int buttonX = GridPane.getColumnIndex((Button)(arg0.getSource()));
-                int buttonY = GridPane.getRowIndex((Button)(arg0.getSource()));
-                Cell cell = Game.map[14-buttonY][buttonX];
-
-                if(cell instanceof CharacterCell){
-                    if(((CharacterCell)(cell)).getCharacter() instanceof Zombie) {
-                        chosenTarget = (Zombie)((CharacterCell)(cell)).getCharacter();
-                        chosenHero.setTarget(chosenTarget);
-                        String zombieInfo = "Zombie Name: " + ((CharacterCell)(cell)).getCharacter().getName() +
-                                            "\nZombie Health: " + ((CharacterCell)(cell)).getCharacter().getCurrentHp() +
-                                            "\nZombie Damage: " + ((CharacterCell)(cell)).getCharacter().getAttackDmg();
-                        info.setText(zombieInfo);
-                    }else if(((CharacterCell)(cell)).getCharacter() instanceof Hero) {
-                        chosenHero = (Hero)(((CharacterCell)(cell)).getCharacter());
-                        getAllHeroesInfo();
-                    }
-                }
+        if(animationCounter == 3){
+            animationCounter = 0;
+            // FadeTransition fade = new FadeTransition();
+            // fade.setDuration(Duration.millis(1000));
+            // fade.setFromValue(10);
+            // fade.setToValue(0);
+            // fade.setCycleCount(1);
+            // fade.setAutoReverse(true);
+            // fade.setNode(map[14 - chosenHero.getLocation().x][chosenHero.getLocation().y].getGraphic());
+            // fade.play();
+            if(Game.heroes.size()>0){
+                chosenHero = Game.heroes.get(0);
             }
-        };
-
-        // event for setting target
-
-        EventHandler<KeyEvent> e2 = new EventHandler<KeyEvent>() {
-
-            @Override
-            public void handle(KeyEvent ke) {
-                if(ke.getCode() == KeyCode.Q){
-                    int buttonX = GridPane.getColumnIndex((Button)(ke.getSource()));
-                    int buttonY = GridPane.getRowIndex((Button)(ke.getSource()));
-                    Cell cell = Game.map[14-buttonY][buttonX];
-
-                    if(cell instanceof CharacterCell){
-                        if(((CharacterCell) cell).getCharacter() instanceof Hero){
-                            chosenTarget = (Hero)(((CharacterCell)(cell)).getCharacter());
-                            chosenHero.setTarget(chosenTarget);
-                        }
-                    }
-                }
-            }
-        };
+        }
+       
 
         // place appropriate image on each button in the map
 
@@ -138,8 +118,46 @@ public class Scene2 {
 				map[i][j].setGraphic(view);
 				map[i][j].setPrefSize(45, 35);
 
-				map[i][j].setOnMouseClicked(e);
-                map[i][j].addEventFilter(KeyEvent.KEY_PRESSED, e2);
+                     // event for setting target
+
+				map[i][j].setOnMouseClicked(event ->
+                {
+                    int buttonX = GridPane.getColumnIndex((Button)(event.getSource()));
+                        int buttonY = GridPane.getRowIndex((Button)(event.getSource()));
+                        Cell cell = Game.map[14-buttonY][buttonX];
+                    if (event.getButton() == MouseButton.PRIMARY)
+                    {
+                        
+        
+                        if(cell instanceof CharacterCell){
+                            if(((CharacterCell)(cell)).getCharacter() instanceof Zombie) {
+                                chosenTarget = (Zombie)((CharacterCell)(cell)).getCharacter();
+                                chosenHero.setTarget(chosenTarget);
+                                zombieHpBar.setProgress(((CharacterCell)(cell)).getCharacter().getCurrentHp()/((CharacterCell)(cell)).getCharacter().getMaxHp());
+                                String zombieInfo = "Zombie Name: " + ((CharacterCell)(cell)).getCharacter().getName() +
+                                "\nZombie Damage: " + ((CharacterCell)(cell)).getCharacter().getAttackDmg() +
+                                "\nZombie Health: "  ;
+                                info.setText(zombieInfo);
+                                // if(!vbox.getChildren().contains(zombieHpBar))
+                                // vbox.getChildren().add(zombieHpBar);
+                            }else if(((CharacterCell)(cell)).getCharacter() instanceof Hero) {
+                               
+                                chosenHero = (Hero)(((CharacterCell)(cell)).getCharacter());
+                                getAllHeroesInfo();
+                            }
+                        }
+                    } else if (event.getButton() == MouseButton.SECONDARY)
+                    {
+                        if(chosenHero instanceof Medic){
+
+                         if(((CharacterCell)(cell)).getCharacter() instanceof Hero){
+                            chosenTarget = (Hero)(((CharacterCell)(cell)).getCharacter());
+                            chosenHero.setTarget(chosenTarget);
+                         }
+
+                        }
+                    }
+                });
 
 				grid.add(map[i][j], j, i);
 			}
@@ -147,27 +165,27 @@ public class Scene2 {
 
         // Animations
 
-        if(counter2 == 5 && chosenTarget != null){
-            counter2 = 0;
+        if(animationCounter == 5 && chosenTarget != null){
+            animationCounter = 0;
             Button b = map[14-chosenHero.getLocation().x][chosenHero.getLocation().y];
-            animateDmg(b, 0.5); 
+            animateDmg(b, 0.7); 
 
             Button b2 = map[14-chosenTarget.getLocation().x][chosenTarget.getLocation().y];
-            animateDmg(b2, 0.5);
-        }else if(counter2 == 4){
-            counter2 = 0;
+            animateDmg(b2, 0.7);
+            String path = Main.csvPath + "\\resources\\punch.mp3";
+            Media media = new Media(new File(path).toURI().toString());
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.setAutoPlay(true);
+            // mediaPlayer.set
+        }else if(animationCounter == 4){
+            animationCounter = 0;
             Button b = map[14-chosenHero.getLocation().x][chosenHero.getLocation().y];
-            animateDmg(b, 0.5); 
-        }else if(counter2 == 3){
-            counter2 = 0;
-            FadeTransition fade = new FadeTransition();
-            fade.setDuration(Duration.millis(1000));
-            fade.setFromValue(10);
-            fade.setToValue(0.1);
-            fade.setCycleCount(1);
-            fade.setAutoReverse(true);
-            fade.setNode(map[14 - chosenHero.getLocation().x][chosenHero.getLocation().y].getGraphic());
-            fade.play();
+            animateDmg(b, 0.7);
+            String path = Main.csvPath + "\\resources\\trap.mp3";
+            Media media = new Media(new File(path).toURI().toString());
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.setAutoPlay(true);
+
         }
 
 
@@ -275,7 +293,7 @@ public class Scene2 {
                     }else if(ke.getCode() == KeyCode.SPACE) {
                         chosenHero.attack();
                         ke.consume();
-                        counter2 = 5;
+                        animationCounter = 5;
                     }else if(ke.getCode() == KeyCode.DIGIT1) {
                         chosenHero.useSpecial();
                         ke.consume();
@@ -289,25 +307,27 @@ public class Scene2 {
                     }
                     if(count != 0){
                         if(hpBefore != chosenHero.getCurrentHp()){
-                            counter2 = 4;
+                            animationCounter = 4;
                         }
                         count = 0;
                     }
                     if(chosenHero.getCurrentHp() <= 0){
-                        counter2 = 3;
+                        animationCounter = 3;
+                       
                     }
-                    // if(){
-                    //         check if zombie is dead -> fade away animation
-                    // }
+
+                    
                     if(Game.checkGameOver()){
                         GameOverScene.setup_gameOverScene();
                         Main.primaryStage.setScene(GameOverScene.gameOverScene);
+                        return;
                     }
                     if(Game.checkWin()){
                         WinScene.setup_winScene();
                         Main.primaryStage.setScene(WinScene.winScene);
+                        return;
                     }
-
+                    
                     draw();
                 }catch(GameActionException e) {
                     errors.setText("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" + e.getMessage());
