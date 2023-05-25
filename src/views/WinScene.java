@@ -14,7 +14,7 @@ import javafx.scene.layout.VBox;
 
 public class WinScene {
     public static VBox msg = new VBox();
-    public static Scene winScene = new Scene(msg, 1300, 680);
+    public static Scene winScene = new Scene(msg, 700, 500);
 
     public static void setup_winScene(){
         msg.getChildren().clear();

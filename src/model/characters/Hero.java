@@ -120,14 +120,9 @@ public abstract class Hero extends Character {
 				}
 				if(Game.map[newLocation.x][newLocation.y] instanceof TrapCell){
 					setCurrentHp(getCurrentHp() - ((TrapCell)Game.map[newLocation.x][newLocation.y]).getTrapDamage());
-//					if(getCurrentHp() <= 0) {
-//						((CharacterCell)(Game.map[getLocation().x][getLocation().y])).setCharacter(null);
-//						setLocation(newLocation);
-//						Game.map[newLocation.x][newLocation.y] = new CharacterCell(this,true);
-//						onCharacterDeath();
-//						Game.map[newLocation.x][newLocation.y] = new CharacterCell(null,true);
-//						return;
-//					}	
+					if(getCurrentHp() <= 0) {
+						onCharacterDeath();
+					}	
 				}
 				((CharacterCell)(Game.map[getLocation().x][getLocation().y])).setCharacter(null);
 				Game.map[newLocation.x][newLocation.y] = new CharacterCell(this,true);

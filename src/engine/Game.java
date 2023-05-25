@@ -93,12 +93,19 @@ public class Game {
 	}
 
 	public static void spawnZombie(){
+		boolean flag = false;
 		Point p = getRandomEmptyCell();
+		if(map[p.x][p.y].isVisible())
+			flag = true;
+
 		Zombie z = new Zombie();
 		zombies.add(z);
 		map[p.x][p.y] = new CharacterCell(z, false);
 		z.setLocation(p);
 		Zombie.ZOMBIES_COUNT++;
+		
+		if(flag)
+			map[p.x][p.y].setVisible(true);
 	}
 
 	public static void updateMapVisibility(){

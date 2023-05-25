@@ -1,5 +1,7 @@
 package views;
 
+import java.io.File;
+
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
@@ -14,6 +16,8 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 
 public class StartScene {
@@ -58,6 +62,10 @@ public class StartScene {
                     // Main.primaryStage.setFullScreen(true);
 			        // Main.primaryStage.setFullScreenExitHint("");
                 }
+                String path = Main.csvPath + "\\resources\\changingTabs.mp3";
+                Media media = new Media(new File(path).toURI().toString());
+                MediaPlayer mediaPlayer = new MediaPlayer(media);
+                mediaPlayer.setAutoPlay(true);
             }
 
         };
@@ -70,25 +78,29 @@ public class StartScene {
         startGame.setOnMouseClicked(e);
         startGame.setOnMouseEntered(Main.e);
         startGame.setOnMouseExited(Main.e2);
-        startGame.setPrefSize(200, 50);
+        startGame.setPrefSize(250, 50);
+        startGame.setFont(Main.font5);
 
         Button rules = new Button("Rules");
         rules.setOnMouseClicked(e);
         rules.setOnMouseEntered(Main.e);
         rules.setOnMouseExited(Main.e2);
-        rules.setPrefSize(200, 50);
+        rules.setPrefSize(250, 50);
+        rules.setFont(Main.font5);
         
         Button controls = new Button("Controls");
         controls.setOnMouseClicked(e);
         controls.setOnMouseEntered(Main.e);
         controls.setOnMouseExited(Main.e2);
-        controls.setPrefSize(200, 50);
+        controls.setPrefSize(250, 50);
+        controls.setFont(Main.font5);
         
         Button credits = new Button("Credits");
         credits.setOnMouseClicked(e);
         credits.setOnMouseEntered(Main.e);
         credits.setOnMouseExited(Main.e2);
-        credits.setPrefSize(200, 50);
+        credits.setPrefSize(250, 50);
+        credits.setFont(Main.font5);
         
         root.getChildren().addAll(title, startGame, rules, controls, credits);
     }
