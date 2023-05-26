@@ -22,17 +22,17 @@ public class WinScene {
     public static void setup_winScene(){
         msg.getChildren().clear();
         msg.setSpacing(25);
-        msg.setAlignment(Pos.BOTTOM_CENTER);
+        msg.setAlignment(Pos.CENTER);
 
         // setting background image has a problem with the size of the image
-        msg.setBackground(new Background(new BackgroundImage(new Image(Main.resPath + "WinScene.jpg"), 
+        msg.setBackground(new Background(new BackgroundImage(new Image(Main.resPath + "WinBg.jpeg"), 
                         BackgroundRepeat.REPEAT, 
                         BackgroundRepeat.NO_REPEAT, 
                         new BackgroundPosition(Side.LEFT, 0, true, Side.BOTTOM, 0, true),
                         new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, false, true)
                         )));
 
-        Label l = new Label("YouWin!");
+        Label l = new Label("You Win!");
         l.setFont(Main.font7);
         l.setTextFill(Paint.valueOf("#d3d3d3"));
         DropShadow ds = new DropShadow();
@@ -40,8 +40,9 @@ public class WinScene {
         // ds.setOffsetY(3.0f);
         ds.setColor(Color.RED);
         l.setEffect(ds);
-        l.setAlignment(Pos.TOP_CENTER);     
-        // l.setStyle("-fx-background-color: #000000;");
+        l.setAlignment(Pos.TOP_CENTER); 
+        l.setTranslateY(155);    
         msg.getChildren().add(l);
+        // l.setStyle("-fx-background-color: #000000;");
     }
 }

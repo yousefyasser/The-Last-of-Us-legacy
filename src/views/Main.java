@@ -21,7 +21,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class Main extends Application {
-	public static final String csvPath = "C:\\Users\\OS\\Desktop\\The-Last-of-Us-legacy-main\\src\\engine\\";
+	public static final String csvPath = "D:\\CMS SEM 4 SEIF (MET)\\(CSEN401) Computer Programming Lab\\GAME\\Milestone 3\\Working\\The-Last-of-Us-legacy-main\\src\\engine\\";
 	public static final String resPath = "file:\\" + csvPath + "resources\\";
 	public static Stage primaryStage;
 	public static String path = csvPath + "\\resources\\startsceneSelect.wav";
@@ -35,6 +35,7 @@ public class Main extends Application {
 	public static Font font5 = Font.loadFont(Main.resPath + "MK4.TTF", 30);
 	public static Font font6 = Font.loadFont(Main.resPath + "MK4.TTF", 40);
 	public static Font font7 = Font.loadFont(Main.resPath + "MK4.TTF", 90);
+	public static Font font8 = Font.loadFont(Main.resPath + "MK4.TTF", 70);
 	public static EventHandler<Event> e;
 	public static EventHandler<Event> e2;
 
@@ -112,7 +113,7 @@ public class Main extends Application {
 			// DO NOT RUN SCENE 2 DIRECTLY
 
 			// WinScene.setup_winScene();
-			// primaryStage.setFullScreen(true);
+			primaryStage.setFullScreen(true);
 			// primaryStage.setScene(WinScene.winScene);
 
 			// GameOverScene.setup_gameOverScene();

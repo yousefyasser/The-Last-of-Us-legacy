@@ -1,6 +1,7 @@
 package views;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import engine.Game;
 import exceptions.GameActionException;
@@ -42,38 +43,28 @@ public class Scene2 {
     public static HBox root2 = new HBox();
     public static GridPane grid = new GridPane();
     public static VBox vbox = new VBox();
-    public static HBox vaccineInventory = new HBox();
-    public static HBox supplyInventory = new HBox();
     public static Scene scene2 = new Scene(root2, 1300, 680);
 
     public static Label info = new Label();
     public static Label errors = new Label();
     
-    public static ProgressBar heroHpBar = new ProgressBar();
-    public static ProgressBar zombieHpBar = new ProgressBar();
-
     public static Button[][] map = new Button[15][15];
     public static Label[] allHeroInfo = new Label[6];
-    public static Button[] vaccines = new Button[5];
-    public static Button[] supplies = new Button[5];
 
     public static HBox first2Heroes = new HBox();
     public static HBox second2Heroes = new HBox();
 
-    public static int directionCounter = 0;
+    public static ArrayList<Hero> heroesAttacked = new ArrayList<Hero>();
+
     public static int animationdirectionCounter = 0;
     public static String characterButtonColor;
-    public static boolean zombieClicked;
 
     public static void draw() {
-        zombieClicked = false;
 
         info.setText("");
         errors.setText("");
+          
         
-        updateHeroHpBar();  
-        if(vbox.getChildren().contains(zombieHpBar))
-            vbox.getChildren().remove(zombieHpBar);     
         
         // place appropriate image on each button in the map
 
@@ -94,13 +85,7 @@ public class Scene2 {
 						if(((CharacterCell)(Game.map[14-i][j])).getCharacter() instanceof Zombie) {
 							img = new Image(Main.resPath + "zombie.png");
 						}else if(((CharacterCell)(Game.map[14-i][j])).getCharacter() instanceof Hero){
-							// if(directionCounter == 0){
-                            //     img = new Image(Main.resPath + chosenHero.getName() + ".png");
-                            // }else if(directionCounter == 1){
-                            //     img = new Image(Main.resPath + chosenHero.getName() + "2.png");
-                            // }
-                            img = new Image(Main.resPath + "hero.png");
-
+                                img = new Image(Main.resPath + "heroes\\"+ ((CharacterCell)(Game.map[14-i][j])).getCharacter().getName() + ".png");
                             if((Hero)(((CharacterCell)(Game.map[14-i][j])).getCharacter()) instanceof Medic){
                                 characterButtonColor = "yellow";
                                 map[i][j].setStyle("-fx-background-color: #ffff00");
@@ -108,15 +93,14 @@ public class Scene2 {
                                 characterButtonColor = "blue";
                                 map[i][j].setStyle("-fx-background-color: #0000ff");
                             }else if((Hero)(((CharacterCell)(Game.map[14-i][j])).getCharacter()) instanceof Fighter){
-                                characterButtonColor = "darkgrey";
-                                map[i][j].setStyle("-fx-background-color: #808080");
+                                characterButtonColor = "orange";
+                                map[i][j].setStyle("-fx-background-color: #ffa500");
                             }
 						}
 					 }
-                     else if(Game.map[14-i][j] instanceof TrapCell) {
-						img = new Image(Main.resPath + "trap.png");
-						
-					}
+                    //  else if(Game.map[14-i][j] instanceof TrapCell) { //remove b4 submission
+					// 	// img = new Image(Main.resPath + "trap.png");
+					// }
 				}else {
 					img = new Image(Main.resPath + "mystery.png");
 				}
@@ -139,11 +123,6 @@ public class Scene2 {
                     if (event.getButton() == MouseButton.PRIMARY) {
                         if(cell instanceof CharacterCell) {
                             if(((CharacterCell)(cell)).getCharacter() instanceof Zombie) {
-                                zombieClicked = true;
-                                vbox.getChildren().remove(vaccineInventory);
-                                vbox.getChildren().remove(supplyInventory);
-                                vbox.getChildren().remove(heroHpBar);
-
                                 chosenTarget = (Zombie)((CharacterCell)(cell)).getCharacter();
                                 chosenHero.setTarget(chosenTarget);
                                 
@@ -151,23 +130,9 @@ public class Scene2 {
                                 "\nZombie Damage: " + ((CharacterCell)(cell)).getCharacter().getAttackDmg() +
                                 "\nZombie Health: "  ;
                                 info.setText(zombieInfo);
-
-                                zombieHpBar.setProgress((double)(((CharacterCell)(cell)).getCharacter().getCurrentHp()) / (((CharacterCell)(cell)).getCharacter().getMaxHp()));
-
-                                if(!vbox.getChildren().contains(zombieHpBar))
-                                    vbox.getChildren().add(zombieHpBar);
                             }else if(((CharacterCell)(cell)).getCharacter() instanceof Hero) {
-                                zombieClicked = false;
-                                if(!vbox.getChildren().contains(vaccineInventory))
-                                    vbox.getChildren().add(vaccineInventory);   
-                                if(!vbox.getChildren().contains(supplyInventory))
-                                    vbox.getChildren().add(supplyInventory);
-
                                 chosenHero = (Hero)(((CharacterCell)(cell)).getCharacter());
                                 getAllHeroesInfo();
-                                updateHeroHpBar();
-                                if(vbox.getChildren().contains(zombieHpBar))
-                                    vbox.getChildren().remove(zombieHpBar); 
                             }
                         }
                     } else if (event.getButton() == MouseButton.SECONDARY) {
@@ -191,12 +156,6 @@ public class Scene2 {
 
 		if(!vbox.getChildren().contains(info))
             vbox.getChildren().add(info);
-        if(!zombieClicked){
-            if(!vbox.getChildren().contains(vaccineInventory))
-                vbox.getChildren().add(vaccineInventory);
-            if(!vbox.getChildren().contains(supplyInventory))
-                vbox.getChildren().add(supplyInventory);
-        }
         if(!vbox.getChildren().contains(first2Heroes))
             vbox.getChildren().add(first2Heroes);
         if(!vbox.getChildren().contains(second2Heroes))
@@ -205,33 +164,25 @@ public class Scene2 {
 			vbox.getChildren().add(errors);
 	}
 
-    public static void updateHeroHpBar(){
-        heroHpBar.setProgress((double)(chosenHero.getCurrentHp()) / (chosenHero.getMaxHp()));
-                
-        if(!vbox.getChildren().contains(heroHpBar))
-            vbox.getChildren().add(heroHpBar);
-    }
-
     public static void playAnimations() {
         if(animationdirectionCounter == 2){
             animationdirectionCounter = 0;
             String path = Main.csvPath + "\\resources\\collectibles.mp3";
             Media media = new Media(new File(path).toURI().toString());
             MediaPlayer mediaPlayer = new MediaPlayer(media);
+            // mediaPlayer.setVolume(ControlsScene.newVolume/100);
             mediaPlayer.setAutoPlay(true);
-            
         }else if(animationdirectionCounter == 3){
             animationdirectionCounter = 0;
             String path = Main.csvPath + "\\resources\\deadNotification.mp3";
             Media media = new Media(new File(path).toURI().toString());
             MediaPlayer mediaPlayer = new MediaPlayer(media);
+            // mediaPlayer.setVolume(ControlsScene.newVolume/100);
             mediaPlayer.setAutoPlay(true);
 
             if(Game.heroes.size()>0){
                 chosenHero = Game.heroes.get(0);
-            }
-
-            updateHeroHpBar();
+            } 
 
         }else if(animationdirectionCounter == 4){
             animationdirectionCounter = 0;
@@ -240,6 +191,7 @@ public class Scene2 {
             String path = Main.csvPath + "\\resources\\trap.mp3";
             Media media = new Media(new File(path).toURI().toString());
             MediaPlayer mediaPlayer = new MediaPlayer(media);
+            // mediaPlayer.setVolume(ControlsScene.newVolume/100);
             mediaPlayer.setAutoPlay(true);
 
         }else if(animationdirectionCounter == 5 && chosenTarget != null){
@@ -252,12 +204,34 @@ public class Scene2 {
             String path = Main.csvPath + "\\resources\\punch.mp3";
             Media media = new Media(new File(path).toURI().toString());
             MediaPlayer mediaPlayer = new MediaPlayer(media);
+            // mediaPlayer.setVolume(ControlsScene.newVolume/100);
             mediaPlayer.setAutoPlay(true);
 
         }else if(animationdirectionCounter == 6){
             animationdirectionCounter = 0;
             Button b = map[14-chosenTarget.getLocation().x][chosenTarget.getLocation().y];
             animateEffect(b, 0.3, "green"); 
+        }
+        else if(animationdirectionCounter == 9){
+            animationdirectionCounter = 0;
+            for(int i = 0 ; i<heroesAttacked.size();i++){
+
+
+                Button b = map[14-heroesAttacked.get(i).getLocation().x][heroesAttacked.get(i).getLocation().y];
+                animateEffect(b, 0.3, "red"); 
+
+                String path = Main.csvPath + "\\resources\\punch.mp3";
+                Media media = new Media(new File(path).toURI().toString());
+                MediaPlayer mediaPlayer = new MediaPlayer(media);
+                mediaPlayer.setAutoPlay(true);
+
+            // Button b2 = map[14-heroesAttacked.get(i).getTarget().getLocation().x][heroesAttacked.get(i).getTarget().getLocation().y];
+            // animateEffect(b2, 0.3, "red");
+            // mediaPlayer.setVolume(ControlsScene.newVolume/100);
+                heroesAttacked.remove(i);
+
+            }
+
         }
     }
 
@@ -272,54 +246,11 @@ public class Scene2 {
     }
 
     public static void getAllHeroesInfo() {
-        vaccineInventory.getChildren().clear();
-        supplyInventory.getChildren().clear();
         first2Heroes.getChildren().clear();
         second2Heroes.getChildren().clear();
 
-        // Chosen Hero's Vaccine Inventory
 
-        for(int i = 0; i < vaccines.length; i++){
-            vaccines[i] = new Button();
-            vaccines[i].setPrefSize(45, 35);
-            vaccines[i].setDisable(true);
-            vaccines[i].setOpacity(1);
-            
-            if(i < chosenHero.getVaccineInventory().size()){
-                Image img = new Image(Main.csvPath + "\\resources\\vaccine.png");
-                ImageView view = new ImageView(img);
-                view.setFitHeight(25);
-                view.setFitWidth(25);
-                vaccines[i].setGraphic(view);
-                vaccines[i].setStyle("-fx-border-color: #000000; -fx-border-width: 1px;");
-            }else{
-                vaccines[i].setStyle("-fx-border-color: #000000; -fx-border-width: 1px; -fx-background-color: #ffffff");
-            }
 
-            vaccineInventory.getChildren().add(vaccines[i]);
-        }
-
-        // Chosen Hero's Supply Inventory
-
-        for(int i = 0; i < supplies.length; i++){
-            supplies[i] = new Button();
-            supplies[i].setPrefSize(45, 35);
-            supplies[i].setDisable(true);
-            supplies[i].setOpacity(1);
-            
-            if(i < chosenHero.getSupplyInventory().size()){
-                Image img = new Image(Main.csvPath + "\\resources\\supply.png");
-                ImageView view = new ImageView(img);
-                view.setFitHeight(25);
-                view.setFitWidth(25);
-                supplies[i].setGraphic(view);
-                supplies[i].setStyle("-fx-border-color: #000000; -fx-border-width: 1px;");
-            }else{
-                supplies[i].setStyle("-fx-border-color: #000000; -fx-border-width: 1px; -fx-background-color: #ffffff");
-            }
-
-            supplyInventory.getChildren().add(supplies[i]);
-        }
 
         // Chosen Hero Info
 
@@ -331,8 +262,8 @@ public class Scene2 {
                             "\nHero Damage: " + chosenHero.getAttackDmg() + 
                             "\nActions Available: " + chosenHero.getActionsAvailable() +
                             "\nSupplies: " + chosenHero.getSupplyInventory().size() +
-                            "\nVaccines: " + chosenHero.getVaccineInventory().size() +
-                            "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+                            "\nVaccines: " + chosenHero.getVaccineInventory().size() 
+                            ;
         info.setText(heroInfo);
 
         // All Heroes Info
@@ -369,23 +300,11 @@ public class Scene2 {
         info.setFont(Main.font3);
         errors.setFont(Main.font4);
 
-        zombieHpBar.setProgress(1);
-        zombieHpBar.setPrefWidth(150);
-        zombieHpBar.setPrefHeight(20);
-        zombieHpBar.setStyle("-fx-accent: red;");
-        zombieHpBar.setTranslateX(100);
-
-        heroHpBar.setProgress(1);
-        heroHpBar.setPrefWidth(150);
-        heroHpBar.setPrefHeight(20);
-        heroHpBar.setStyle("-fx-accent: red;");
-        heroHpBar.setTranslateX(100);
+   
 
         first2Heroes.setSpacing(10);
         second2Heroes.setSpacing(10);
 
-        vaccineInventory.setSpacing(2);
-        supplyInventory.setSpacing(2);
 
         draw();
 
@@ -393,6 +312,13 @@ public class Scene2 {
             int moveCounter=0;
             public void handle(KeyEvent ke) {
                 try {
+
+                    ArrayList <Integer> heroHp = new ArrayList<Integer>();
+
+                    for(int i = 0; i < Game.heroes.size(); i++){
+                       heroHp.add(Game.heroes.get(i).getCurrentHp());
+                    }
+
                     int hpBefore = chosenHero.getCurrentHp();
                     int collectiblesBefore = chosenHero.getSupplyInventory().size() + chosenHero.getVaccineInventory().size();
 
@@ -408,12 +334,12 @@ public class Scene2 {
                         chosenHero.move(Direction.LEFT);
                         ke.consume();
                         moveCounter = 3;
-                        directionCounter = 1;
+                        
                     }else if ((RulesScene.keyBindingsOption1 && ke.getCode() == KeyCode.RIGHT) || (!RulesScene.keyBindingsOption1 && ke.getCode() == KeyCode.D)) {
                         chosenHero.move(Direction.RIGHT);
                         ke.consume();
                         moveCounter = 4;
-                        directionCounter = 0;
+                        
                     }else if((RulesScene.keyBindingsOption1 && ke.getCode() == KeyCode.SPACE) || (!RulesScene.keyBindingsOption1 && ke.getCode() == KeyCode.X)) {
                         chosenHero.attack();
                         ke.consume();
@@ -426,6 +352,17 @@ public class Scene2 {
                             animationdirectionCounter = 6;
                     }else if(ke.getCode() == KeyCode.E){
                         Game.endTurn();
+                        for(int i = 0; i < Game.heroes.size(); i++){
+                            if(heroHp.get(i) != Game.heroes.get(i).getCurrentHp()){
+                                
+
+                                heroesAttacked.add(Game.heroes.get(i));
+
+                                animationdirectionCounter = 9;
+                            }
+
+                         }
+                         
                         grid.getChildren().clear();
                         ke.consume();
                     }else if(ke.getCode() == KeyCode.C){
@@ -459,7 +396,7 @@ public class Scene2 {
                     draw();
                     
                 }catch(GameActionException e) {
-                    errors.setText("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" + e.getMessage());
+                    errors.setText("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" + e.getMessage());
                 }
             }
         });
