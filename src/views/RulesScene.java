@@ -65,8 +65,8 @@ public class RulesScene {
 
         Label rulesLabel = new Label(rulesText);
         rulesLabel.setFont(Main.font5);
-        rulesLabel.setStyle("-fx-background-color: #000000;");
-        rulesLabel.setTextFill(Paint.valueOf("#006400"));
+        // rulesLabel.setStyle("-fx-background-color: #000000;");
+        rulesLabel.setTextFill(Paint.valueOf("#ffffff"));
 
         
         anotherOption.setFont(Main.font6);

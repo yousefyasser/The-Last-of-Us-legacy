@@ -21,7 +21,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class Main extends Application {
-	public static final String csvPath = "D:\\CMS SEM 4 SEIF (MET)\\(CSEN401) Computer Programming Lab\\GAME\\Milestone 3\\Working\\The-Last-of-Us-legacy-main\\src\\engine\\";
+	public static final String csvPath = "C:\\Users\\OS\\Desktop\\The-Last-of-Us-legacy-main\\src\\engine\\";
 	public static final String resPath = "file:\\" + csvPath + "resources\\";
 	public static Stage primaryStage;
 	public static String path = csvPath + "\\resources\\startsceneSelect.wav";
@@ -103,17 +103,17 @@ public class Main extends Application {
 			// 	}
 			// });
 
-			// StartScene.setup_starting_scene();
-			// primaryStage.setScene(StartScene.startScene);
+			StartScene.setup_starting_scene();
+			primaryStage.setScene(StartScene.startScene);
 
 			// ChooseHeroScene.setup_chooseHeroScene();
 			// primaryStage.setScene(ChooseHeroScene.chooseHeroScene);
 
 			// DO NOT RUN SCENE 2 DIRECTLY
 
-			WinScene.setup_winScene();
-			primaryStage.setFullScreen(true);
-			primaryStage.setScene(WinScene.winScene);
+			// WinScene.setup_winScene();
+			// primaryStage.setFullScreen(true);
+			// primaryStage.setScene(WinScene.winScene);
 
 			// GameOverScene.setup_gameOverScene();
 			// primaryStage.setScene(GameOverScene.gameOverScene);
