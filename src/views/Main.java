@@ -22,7 +22,7 @@ import javafx.util.Duration;
 
 
 public class Main extends Application {
-	public static final String csvPath = "D:\\CMS SEM 4 SEIF (MET)\\(CSEN401) Computer Programming Lab\\GAME\\Milestone 3\\Working\\The-Last-of-Us-legacy-main\\src\\engine\\";
+	public static final String csvPath = "C:\\Users\\OS\\Desktop\\The-Last-of-Us-legacy-main\\src\\engine\\";
 	public static final String resPath = "file:\\" + csvPath + "resources\\";
 	public static Stage primaryStage;
 	public static String path = csvPath + "\\resources\\startsceneSelect.wav";
@@ -46,7 +46,6 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-		mediaPlayer.setVolume(0.1);
 		try {
 			e = new EventHandler<Event>() {
 				@Override
@@ -55,22 +54,12 @@ public class Main extends Application {
 					l.setOpacity(0.8);
 
 					l.setCursor(javafx.scene.Cursor.HAND);
-					// l.setTextFill(Paint.valueOf("#7fff00"));
-					mediaPlayer.setAutoPlay(true);
+					mediaPlayer.play();
 					DropShadow ds = new DropShadow();
 					ds.setOffsetY(3.0f);
        				ds.setColor(Color.BLUE);
 					ds.setRadius(30);
 					l.setEffect(ds);
-					// mediaPlayer.play();
-					
-					// Button b = (Button) (arg0.getSource());
-					// b.setOpacity(0.8);
-					// b.setBorder(Border.EMPTY);
-					
-					// b.setBlendMode(BlendMode.DARKEN);
-					// b.setWrapText(true);
-					
 				}
 			};
 
@@ -93,14 +82,13 @@ public class Main extends Application {
 			primaryStage.getIcons().add(icon);
 
 			primaryStage.setTitle("The Last of Us");
-			// primaryStage.setFullScreenExitHint("");
 			primaryStage.setFullScreen(false);
 			primaryStage.setResizable(false);
 
 			// background music
 
-			mediaPlayer.setAutoPlay(true);
-			mediaPlayer.setOnEndOfMedia(new Runnable() {
+			mediaPlayer1.setAutoPlay(true);
+			mediaPlayer1.setOnEndOfMedia(new Runnable() {
 				public void run() {
 				  mediaPlayer.seek(Duration.ZERO);
 				}

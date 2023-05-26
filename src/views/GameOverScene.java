@@ -26,6 +26,7 @@ public class GameOverScene {
         msg.setAlignment(Pos.CENTER);
 
         // setting background image
+
         msg.setBackground(new Background(new BackgroundImage(new Image(Main.resPath + "GameOverBg.jpeg"), 
                         BackgroundRepeat.REPEAT, 
                         BackgroundRepeat.NO_REPEAT, 
@@ -37,7 +38,6 @@ public class GameOverScene {
         l.setTextFill(Paint.valueOf("#000000"));
         DropShadow ds = new DropShadow();
         ds.setRadius(30.0);
-        // ds.setOffsetY(3.0f);
         ds.setColor(Color.RED);
         l.setEffect(ds);
 

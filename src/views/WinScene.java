@@ -25,6 +25,7 @@ public class WinScene {
         msg.setAlignment(Pos.CENTER);
 
         // setting background image has a problem with the size of the image
+
         msg.setBackground(new Background(new BackgroundImage(new Image(Main.resPath + "WinBg.jpeg"), 
                         BackgroundRepeat.REPEAT, 
                         BackgroundRepeat.NO_REPEAT, 
@@ -37,12 +38,10 @@ public class WinScene {
         l.setTextFill(Paint.valueOf("#d3d3d3"));
         DropShadow ds = new DropShadow();
         ds.setRadius(30.0);
-        // ds.setOffsetY(3.0f);
         ds.setColor(Color.RED);
         l.setEffect(ds);
         l.setAlignment(Pos.TOP_CENTER); 
         l.setTranslateY(155);    
         msg.getChildren().add(l);
-        // l.setStyle("-fx-background-color: #000000;");
     }
 }

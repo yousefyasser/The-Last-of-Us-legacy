@@ -64,7 +64,6 @@ public class RulesScene {
 
         Label rulesLabel = new Label(rulesText);
         rulesLabel.setFont(Main.font5);
-        // rulesLabel.setStyle("-fx-background-color: #000000;");
         rulesLabel.setTextFill(Paint.valueOf("#ffffff"));
 
         
@@ -88,16 +87,8 @@ public class RulesScene {
             public void handle(Event arg0) {
                 StartScene.setup_starting_scene();
                 Main.primaryStage.setScene(StartScene.startScene);
-                // Main.primaryStage.setFullScreen(true);
-                // Main.primaryStage.setFullScreenExitHint("");
-                // String path = Main.csvPath + "\\resources\\changingTabs.mp3";
-                // Media media = new Media(new File(path).toURI().toString());
-                // MediaPlayer mediaPlayer = new MediaPlayer(media);
-                // mediaPlayer.setAutoPlay(true);
             }
         });
-
-       
 
         buttons.getChildren().add(anotherOption);
         buttons.getChildren().add(back);
@@ -120,6 +111,7 @@ public class RulesScene {
         back.setOnMouseExited(Main.e2);
 
         // setting background image
+        
         rules.setBackground(new Background(new BackgroundImage(new Image(Main.resPath + "bg1.png"), 
         BackgroundRepeat.REPEAT, 
         BackgroundRepeat.NO_REPEAT, 

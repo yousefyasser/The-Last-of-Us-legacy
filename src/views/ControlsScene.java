@@ -35,6 +35,7 @@ public class ControlsScene {
         controls.setSpacing(100);
 
         // setting background image
+
         controls.setAlignment(Pos.CENTER);
         controls.setBackground(new Background(new BackgroundImage(new Image(Main.resPath + "bg1.png"), 
                         BackgroundRepeat.REPEAT, 
@@ -61,12 +62,6 @@ public class ControlsScene {
             volume.setMinWidth(50);
             volume.setMaxWidth(200);
             volume.setStyle("-fx-background-color: #000000;");
-            // volume.setStyle("-fx-control-inner-background: #ff0000;");
-            // volume.setStyle("-fx-accent: #87cefa;");
-            // volume.setStyle("-fx-selection-bar: #000000;");
-            // volume.setStyle("-fx-selection-bar-non-focused: #87cefa;");
-            // volume.setStyle("-fx-selection-bar-texture: #87cefa;");
-            // volume.setStyle("-fx-background-color: linear-gradient(to right, #2D819D 20%, #969696 20%);");
             volumeCountter++;
 
         }
@@ -75,10 +70,6 @@ public class ControlsScene {
             volume.setMinWidth(50);
             volume.setMaxWidth(200);
             volume.setStyle("-fx-background-color: #000000;");
-            // volume.setStyle("-fx-control-inner-background: #87cefa;");
-            // volume.setStyle("-fx-control-inner-background: #ff0000;");
-            // volume.setStyle("-fx-selection-bar: #000000;");
-            // volume.setStyle("-fx-background-color: linear-gradient(to right, #2D819D 20%, #969696 20%);");
         }
 
         Label volText = new Label("Volume: " + newVolume);
@@ -91,10 +82,6 @@ public class ControlsScene {
             Main.mediaPlayer.setVolume(newValue.intValue() / 100.0);
             Main.mediaPlayer1.setVolume(newValue.intValue() / 100.0);
             ChooseHeroScene.mediaPlayer.setVolume(newValue.intValue() / 100.0);
-            Scene2.mediaPlayer1.setVolume(newValue.intValue() / 100.0);
-            Scene2.mediaPlayer2.setVolume(newValue.intValue() / 100.0);
-            Scene2.mediaPlayer3.setVolume(newValue.intValue() / 100.0);
-            Scene2.mediaPlayer4.setVolume(newValue.intValue() / 100.0);
             newVolume = newValue.intValue();
         });
 
@@ -109,12 +96,6 @@ public class ControlsScene {
             public void handle(Event arg0) {
                 StartScene.setup_starting_scene();
                 Main.primaryStage.setScene(StartScene.startScene);
-                // Main.primaryStage.setFullScreen(true);
-                // Main.primaryStage.setFullScreenExitHint("");
-                // String path = Main.csvPath + "\\resources\\changingTabs.mp3";
-                // Media media = new Media(new File(path).toURI().toString());
-                // MediaPlayer mediaPlayer = new MediaPlayer(media);
-                // mediaPlayer.setAutoPlay(true);
             }
         });
         back.setOnMouseEntered(Main.e);

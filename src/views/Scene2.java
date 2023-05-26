@@ -7,7 +7,6 @@ import engine.Game;
 import exceptions.GameActionException;
 import javafx.animation.PauseTransition;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import model.characters.Direction;
 import model.characters.Explorer;
 import model.characters.Fighter;
@@ -62,21 +61,10 @@ public class Scene2 {
     public static String characterButtonColor;
     public static String[] heroColors = new String[8];
 
-    public static String path1 = Main.csvPath + "\\resources\\collectibles.mp3";
-    public static Media media1 = new Media(new File(path1).toURI().toString());
-    public static MediaPlayer mediaPlayer1 = new MediaPlayer(media1);
-
-    public static String path2 = Main.csvPath + "\\resources\\deadNotification.mp3";
-    public static Media media2 = new Media(new File(path2).toURI().toString());
-    public static MediaPlayer mediaPlayer2 = new MediaPlayer(media2);
-
-    public static String path3 = Main.csvPath + "\\resources\\trap.mp3";
-    public static Media media3 = new Media(new File(path3).toURI().toString());
-    public static MediaPlayer mediaPlayer3 = new MediaPlayer(media3);
-
-    public static String path4 = Main.csvPath + "\\resources\\punch.mp3";
-    public static Media media4 = new Media(new File(path4).toURI().toString());
-    public static MediaPlayer mediaPlayer4 = new MediaPlayer(media4);
+    public static MediaPlayer mediaPlayer1;
+    public static MediaPlayer mediaPlayer2;
+    public static MediaPlayer mediaPlayer3;
+    public static MediaPlayer mediaPlayer4;
 
     public static void draw() {
 
@@ -84,8 +72,6 @@ public class Scene2 {
         errors.setText("");
         grid.setPrefHeight(scene2.getHeight());
 
-        
-        
         // place appropriate image on each button in the map
 
 		for(int i = 0; i < 15; i++) {
@@ -121,11 +107,7 @@ public class Scene2 {
 						}
 
 					 }
-                    //  else if(Game.map[14-i][j] instanceof TrapCell) { //remove b4 submission
-					// 	// img = new Image(Main.resPath + "trap.png");
-					// }
 				}else {
-					// img = new Image(Main.resPath + "mystery.png");
                     map[i][j].setStyle("-fx-background-color: #000000; -fx-border-color: #ffffff; -fx-border-width: 1px;");
 				}
 
@@ -190,22 +172,29 @@ public class Scene2 {
         if(!vbox.getChildren().contains(errors))
 			vbox.getChildren().add(errors);
         
-        
-        
         vbox.setStyle("-fx-background-color: #000000; -fx-background-radius: 10px; -fx-padding: 10px;");    
 	}
 
     public static void playAnimations() {
         if(animationdirectionCounter == 2){
             animationdirectionCounter = 0;
+            String path1 = Main.csvPath + "\\resources\\collectibles.mp3";
+            Media media1 = new Media(new File(path1).toURI().toString());
+            mediaPlayer1 = new MediaPlayer(media1);
+            mediaPlayer1.setVolume(ControlsScene.newVolume/100.0);
+
             
-            // mediaPlayer.setVolume(ControlsScene.newVolume/100);
-            mediaPlayer1.setAutoPlay(true);
+            mediaPlayer1.play();
         }else if(animationdirectionCounter == 3){
             animationdirectionCounter = 0;
             
-            // mediaPlayer.setVolume(ControlsScene.newVolume/100);
-            mediaPlayer2.setAutoPlay(true);
+            String path2 = Main.csvPath + "\\resources\\deadNotification.mp3";
+            Media media2 = new Media(new File(path2).toURI().toString());
+            mediaPlayer2 = new MediaPlayer(media2);
+            mediaPlayer2.setVolume(ControlsScene.newVolume/100.0);
+
+            
+            mediaPlayer2.play();
 
             if(Game.heroes.size()>0){
                 chosenHero = Game.heroes.get(0);
@@ -216,8 +205,11 @@ public class Scene2 {
             Button b = map[14-chosenHero.getLocation().x][chosenHero.getLocation().y];
             animateEffect(b, 0.3, "red");
 
-            // mediaPlayer.setVolume(ControlsScene.newVolume/100);
-            mediaPlayer3.setAutoPlay(true);
+            String path3 = Main.csvPath + "\\resources\\trap.mp3";
+            Media media3 = new Media(new File(path3).toURI().toString());
+            mediaPlayer3 = new MediaPlayer(media3);
+            mediaPlayer3.setVolume(ControlsScene.newVolume/100.0);
+            mediaPlayer3.play();
 
         }else if(animationdirectionCounter == 5 && chosenTarget != null){
             animationdirectionCounter = 0;
@@ -227,8 +219,11 @@ public class Scene2 {
             Button b2 = map[14-chosenTarget.getLocation().x][chosenTarget.getLocation().y];
             animateEffect(b2, 0.3, "red");
 
-            // mediaPlayer.setVolume(ControlsScene.newVolume/100);
-            mediaPlayer4.setAutoPlay(true);
+            String path4 = Main.csvPath + "\\resources\\punch.mp3";
+            Media media4 = new Media(new File(path4).toURI().toString());
+            mediaPlayer4 = new MediaPlayer(media4);
+            mediaPlayer4.setVolume(ControlsScene.newVolume/100.0);
+            mediaPlayer4.play();
 
         }else if(animationdirectionCounter == 6){
             animationdirectionCounter = 0;
@@ -238,19 +233,14 @@ public class Scene2 {
         else if(animationdirectionCounter == 9){
             animationdirectionCounter = 0;
             for(int i = 0 ; i<heroesAttacked.size();i++){
-
-
-                
-
                 Button b = map[14-heroesAttacked.get(i).getLocation().x][heroesAttacked.get(i).getLocation().y];
                 animateEffect(b, 0.3, "red"); 
 
-               
-                mediaPlayer4.setAutoPlay(true);
-
-            // Button b2 = map[14-heroesAttacked.get(i).getTarget().getLocation().x][heroesAttacked.get(i).getTarget().getLocation().y];
-            // animateEffect(b2, 0.3, "red");
-            // mediaPlayer.setVolume(ControlsScene.newVolume/100);
+                String path4 = Main.csvPath + "\\resources\\punch.mp3";
+                Media media4 = new Media(new File(path4).toURI().toString());
+                mediaPlayer4 = new MediaPlayer(media4);
+                mediaPlayer4.play();
+                mediaPlayer4.setVolume(ControlsScene.newVolume/100.0);
             }
            heroesAttacked =  new ArrayList<Hero>();
         }
@@ -334,20 +324,15 @@ public class Scene2 {
         vbox.setSpacing(20);
         vbox.setPrefWidth(400);
         vbox.setPrefHeight(scene2.getHeight()-300);
-        // vbox.setPadding(new Insets(10, 10, 10, 10));
         
-
         root2.getChildren().addAll(grid, vbox);
         Game.startGame(chosenHero);
 
         info.setFont(Main.font3);
         errors.setFont(Main.font9);
 
-   
-
         first2Heroes.setSpacing(10);
         second2Heroes.setSpacing(10);
-
 
         draw();
 
@@ -430,6 +415,7 @@ public class Scene2 {
                         return;
                     }
                     draw();
+                    
                 }catch(GameActionException e) {
                     errors.setText("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" + e.getMessage());
                     errors.setStyle("-fx-text-fill: #ff1493;");

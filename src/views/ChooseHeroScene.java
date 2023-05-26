@@ -50,7 +50,13 @@ public class ChooseHeroScene{
     
     public static void setup_chooseHeroScene(){
         heroes.getChildren().clear();
-       
+        content.getChildren().clear();
+        types.getChildren().clear();
+        info.getChildren().clear();
+        medic.getChildren().clear();
+        explorer.getChildren().clear();
+        fighter.getChildren().clear();
+
        
         medicDropShadow.setOffsetY(3.0f);
         medicDropShadow.setRadius(30);
@@ -74,7 +80,6 @@ public class ChooseHeroScene{
 
         // allignment
 
-        // Main.primaryStage.setFullScreen(true);
         heroes.setAlignment(Pos.CENTER);
         
         // spacing
@@ -87,7 +92,6 @@ public class ChooseHeroScene{
         medic.setSpacing(20);
         explorer.setSpacing(20);
         fighter.setSpacing(20);
-        // types.setTranslateY(-20);
         info.setSpacing(20);
         info.setTranslateX(300);
         info.setTranslateY(120);
@@ -97,11 +101,6 @@ public class ChooseHeroScene{
         Label heroInfo = new Label();
         heroInfo.setStyle("-fx-text-fill: #ff0000; -fx-font-weight: bold;");
         heroInfo.setFont(Main.font5);
-        
-        // Label title = new Label("CHOOSE YOUR HERO");
-        // title.setStyle("-fx-text-fill: #ffff00; -fx-font-weight: bold;");
-        // title.setFont(Main.font1);
-
 
         Label medicTitle = new Label("Medic");
         medicTitle.setStyle(" -fx-text-fill: #00ff00;");
@@ -128,12 +127,6 @@ public class ChooseHeroScene{
 
                     Scene2.setup_scene2();
                     Main.primaryStage.setScene(Scene2.scene2);
-                    // Main.primaryStage.setFullScreen(true);
-			        // Main.primaryStage.setFullScreenExitHint("");
-                    // String path = Main.csvPath + "\\resources\\changingTabs.mp3";
-                    // Media media = new Media(new File(path).toURI().toString());
-                    // MediaPlayer mediaPlayer = new MediaPlayer(media);
-                    // mediaPlayer.setAutoPlay(true);
             }
         };
 
@@ -168,18 +161,6 @@ public class ChooseHeroScene{
                heroInfo.setText(heroData);
                 if(!info.getChildren().contains(heroInfo))
                     info.getChildren().add(heroInfo);
-
-                // preview image of each hero which gonna be used in game board
-
-                // Image img = new Image(Main.resPath + chosenHero.getName() + ".jpeg");
-                // ImageView view = new ImageView(img);
-                // view.setFitWidth(350);
-                // view.setFitHeight(300);
-                // view.setPreserveRatio(true);
-
-                
-                // info.getChildren().add(view);
-                    
             }
         };
 
@@ -189,7 +170,6 @@ public class ChooseHeroScene{
                 mediaPlayer.setAutoPlay(false);
                 mediaPlayer.stop();
                 ((Button) (arg0.getSource())).setOpacity(1);
-                // int heroIndx = Integer.parseInt(((Button) (arg0.getSource())).getId());
                 heroInfo.setText("");
                 info.getChildren().clear();
                 info.getChildren().addAll(heroInfo);
@@ -213,21 +193,16 @@ public class ChooseHeroScene{
             hero.setStyle("-fx-background-color: transparent;");
 
             if(Game.availableHeroes.get(i) instanceof Medic){
-                // hero.setEffect(medicDropShadow);
                 medic.getChildren().add(hero);
             }else if(Game.availableHeroes.get(i) instanceof Explorer){
-                // hero.setEffect(explDropShadow);
                 explorer.getChildren().add(hero);
             }else if(Game.availableHeroes.get(i) instanceof Fighter){
-                // hero.setEffect(fiDropShadow);
                 fighter.getChildren().add(hero);
             }
 
             hero.setOnMouseClicked(e);
             hero.setOnMouseEntered(e2);
             hero.setOnMouseExited(e3);
-
-       
         }
         
         Label back = new Label("Back");
@@ -239,12 +214,6 @@ public class ChooseHeroScene{
             public void handle(Event arg0) {
                 StartScene.setup_starting_scene();
                 Main.primaryStage.setScene(StartScene.startScene);
-                // Main.primaryStage.setFullScreen(true);
-                // Main.primaryStage.setFullScreenExitHint("");
-                // String path = Main.csvPath + "\\resources\\changingTabs.mp3";
-                // Media media = new Media(new File(path).toURI().toString());
-                // MediaPlayer mediaPlayer = new MediaPlayer(media);
-                // mediaPlayer.setAutoPlay(true);
             }
         });
 
@@ -252,8 +221,25 @@ public class ChooseHeroScene{
         back.setOnMouseExited(Main.e2);
             
 
-        types.getChildren().addAll( medicTitle, medic , explorerTitle, explorer, fighterTitle ,fighter);
-        content.getChildren().addAll(types, info, back);
-        heroes.getChildren().addAll(content);
+        if(!types.getChildren().contains(medicTitle))
+            types.getChildren().add(medicTitle);
+        if(!types.getChildren().contains(medic))
+            types.getChildren().add(medic); 
+        if(!types.getChildren().contains(explorerTitle))
+            types.getChildren().add(explorerTitle);       
+        if(!types.getChildren().contains(explorer))
+            types.getChildren().add(explorer);
+        if(!types.getChildren().contains(fighterTitle))
+            types.getChildren().add(fighterTitle);
+        if(!types.getChildren().contains(fighter))
+            types.getChildren().add(fighter);
+        if (!content.getChildren().contains(types))
+            content.getChildren().add(types);
+        if (!content.getChildren().contains(info))
+            content.getChildren().add(info);
+        if(!heroes.getChildren().contains(content))
+            heroes.getChildren().add(content);
+        if(!heroes.getChildren().contains(back))
+            heroes.getChildren().add(back);
     }
 }
