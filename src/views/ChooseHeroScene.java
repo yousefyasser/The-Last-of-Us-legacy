@@ -102,10 +102,10 @@ public class ChooseHeroScene{
                     Main.primaryStage.setScene(Scene2.scene2);
                     // Main.primaryStage.setFullScreen(true);
 			        // Main.primaryStage.setFullScreenExitHint("");
-                    String path = Main.csvPath + "\\resources\\changingTabs.mp3";
-                    Media media = new Media(new File(path).toURI().toString());
-                    MediaPlayer mediaPlayer = new MediaPlayer(media);
-                    mediaPlayer.setAutoPlay(true);
+                    // String path = Main.csvPath + "\\resources\\changingTabs.mp3";
+                    // Media media = new Media(new File(path).toURI().toString());
+                    // MediaPlayer mediaPlayer = new MediaPlayer(media);
+                    // mediaPlayer.setAutoPlay(true);
             }
         };
 

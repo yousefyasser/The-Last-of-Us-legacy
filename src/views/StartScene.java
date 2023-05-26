@@ -7,7 +7,11 @@ import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.Reflection;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
@@ -18,6 +22,8 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 
 public class StartScene {
@@ -27,11 +33,11 @@ public class StartScene {
     public static void setup_starting_scene(){
         root.getChildren().clear();
         // Main.primaryStage.setFullScreen(true);
-        root.setSpacing(25);
+        root.setSpacing(40);
         root.setAlignment(Pos.CENTER);
 
         // setting background image
-        root.setBackground(new Background(new BackgroundImage(new Image(Main.resPath + "background.jpg"), 
+        root.setBackground(new Background(new BackgroundImage(new Image(Main.resPath + "bg1.png"), 
                         BackgroundRepeat.REPEAT, 
                         BackgroundRepeat.NO_REPEAT, 
                         new BackgroundPosition(Side.LEFT, 0, true, Side.BOTTOM, 0, true), 
@@ -41,67 +47,118 @@ public class StartScene {
 
             @Override
             public void handle(MouseEvent arg0) {
-                if(((Button)(arg0.getSource())).getText().equals("Start Game")){
+                if(((Label)(arg0.getSource())).getText().equals("Start Game")){
                     ChooseHeroScene.setup_chooseHeroScene();
                     Main.primaryStage.setScene(ChooseHeroScene.chooseHeroScene);
                     // Main.primaryStage.setFullScreen(true);
 			        // Main.primaryStage.setFullScreenExitHint("");
-                }else if(((Button)(arg0.getSource())).getText().equals("Rules")){
+                }else if(((Label)(arg0.getSource())).getText().equals("Rules")){
                     RulesScene.setup_rulesScene();
                     Main.primaryStage.setScene(RulesScene.rulesScene);
                     // Main.primaryStage.setFullScreen(true);
 			        // Main.primaryStage.setFullScreenExitHint("");
-                }else if(((Button)(arg0.getSource())).getText().equals("Controls")){
+                }else if(((Label)(arg0.getSource())).getText().equals("Controls")){
                     ControlsScene.setup_controlsScene();
                     Main.primaryStage.setScene(ControlsScene.controls_scene);
                     // Main.primaryStage.setFullScreen(true);
 			        // Main.primaryStage.setFullScreenExitHint("");
-                }else if(((Button)(arg0.getSource())).getText().equals("Credits")){
+                }else if(((Label)(arg0.getSource())).getText().equals("Credits")){
                     // go to credits scene
                     // Main.primaryStage.setScene(CreditsScene.credits_scene);
                     // Main.primaryStage.setFullScreen(true);
 			        // Main.primaryStage.setFullScreenExitHint("");
                 }
-                String path = Main.csvPath + "\\resources\\changingTabs.mp3";
-                Media media = new Media(new File(path).toURI().toString());
-                MediaPlayer mediaPlayer = new MediaPlayer(media);
-                mediaPlayer.setAutoPlay(true);
+                // String path = Main.csvPath + "\\resources\\changingTabs.mp3";
+                // Media media = new Media(new File(path).toURI().toString());
+                // MediaPlayer mediaPlayer = new MediaPlayer(media);
+                // mediaPlayer.setAutoPlay(true);
             }
 
         };
 
-        Label title = new Label("The Last of Us");
-        title.setFont(new Font("Arial", 50));
+        Label title = new Label("THE LAST OF US");
+        // title.setFont(new Font("Arial", 50));
         title.setFont(Main.font1);
+        title.setTextFill(Paint.valueOf("#000000"));
+        DropShadow ds = new DropShadow();
+        ds.setOffsetY(3.0f);
+        ds.setColor(Color.color(0.4f, 0.4f, 0.4f));
+        title.setEffect(ds);
+        // Reflection r = new Reflection();
+        // r.setFraction(0.7f);
+        // title.setEffect(r);
         
-        Button startGame = new Button("Start Game");
-        startGame.setOnMouseClicked(e);
-        startGame.setOnMouseEntered(Main.e);
-        startGame.setOnMouseExited(Main.e2);
-        startGame.setPrefSize(250, 50);
-        startGame.setFont(Main.font5);
+       // Button startGame = new Button("Start Game");
+    //    startGame.setGraphic(startGameLabel);
+    //    startGame.setOnMouseClicked(e);
+    //    startGame.setOnMouseEntered(Main.e);
+    //    startGame.setOnMouseExited(Main.e2);
+    // startGame.setPrefHeight(Control.USE_COMPUTED_SIZE);
+    // startGame.setPrefWidth(Control.USE_COMPUTED_SIZE);
+    // startGame.setFont(Main.font5);
+    // startGame.setStyle("-fx-background-color: transparent;");
 
-        Button rules = new Button("Rules");
+        Label startGameLabel = new Label("Start Game");
+        startGameLabel.setFont(Main.font6);
+        startGameLabel.setTextFill(Paint.valueOf("#ff4500"));
+        startGameLabel.setOnMouseEntered(Main.e);
+
+        startGameLabel.setOnMouseExited(Main.e2);
+        startGameLabel.setOnMouseClicked(e);
+        
+        // startGameLabel.setTextFill(Paint.valueOf("#FFFFFF"));
+
+        
+        Label rules = new Label("Rules");
         rules.setOnMouseClicked(e);
         rules.setOnMouseEntered(Main.e);
         rules.setOnMouseExited(Main.e2);
-        rules.setPrefSize(250, 50);
-        rules.setFont(Main.font5);
+        rules.setFont(Main.font6);
+        rules.setTextFill(Paint.valueOf("#ff4500"));
         
-        Button controls = new Button("Controls");
+
+        // Button rules = new Button("Rules");
+        // rules.setOnMouseClicked(e);
+        // rules.setOnMouseEntered(Main.e);
+        // rules.setOnMouseExited(Main.e2);
+        // rules.setPrefHeight(Control.USE_COMPUTED_SIZE);
+        // rules.setPrefWidth(Control.USE_COMPUTED_SIZE);
+        // rules.setFont(Main.font5);
+        // rules.setStyle("-fx-background-color: transparent;");
+        
+        Label controls = new Label("Controls");
         controls.setOnMouseClicked(e);
         controls.setOnMouseEntered(Main.e);
         controls.setOnMouseExited(Main.e2);
-        controls.setPrefSize(250, 50);
-        controls.setFont(Main.font5);
+        controls.setFont(Main.font6);
+        controls.setTextFill(Paint.valueOf("#ff4500"));
+
+        // Button controls = new Button("Controls");
+        // controls.setOnMouseClicked(e);
+        // controls.setOnMouseEntered(Main.e);
+        // controls.setOnMouseExited(Main.e2);
+        // controls.setPrefHeight(Control.USE_COMPUTED_SIZE);
+        // controls.setPrefWidth(Control.USE_COMPUTED_SIZE);
+        // controls.setFont(Main.font5);
+        // controls.setStyle("-fx-background-color: transparent;");
         
-        Button credits = new Button("Credits");
+        Label credits = new Label("Credits");
         credits.setOnMouseClicked(e);
         credits.setOnMouseEntered(Main.e);
         credits.setOnMouseExited(Main.e2);
-        credits.setPrefSize(250, 50);
-        credits.setFont(Main.font5);
+        credits.setFont(Main.font6);
+        credits.setTextFill(Paint.valueOf("#ff4500"));
         
-        root.getChildren().addAll(title, startGame, rules, controls, credits);
+
+        // Button credits = new Button("Credits");
+        // credits.setOnMouseClicked(e);
+        // credits.setOnMouseEntered(Main.e);
+        // credits.setOnMouseExited(Main.e2);
+        // credits.setPrefHeight(Control.USE_COMPUTED_SIZE);
+        // credits.setPrefWidth(Control.USE_COMPUTED_SIZE);
+        // credits.setFont(Main.font5);
+        // credits.setStyle("-fx-background-color: transparent;");
+        
+        root.getChildren().addAll(title, startGameLabel, rules, controls, credits);
     }
 }
