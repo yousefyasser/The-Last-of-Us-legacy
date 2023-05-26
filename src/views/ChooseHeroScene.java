@@ -1,7 +1,7 @@
 package views;
 
 import java.io.File;
-import java.text.ParsePosition;
+
 
 import engine.Game;
 import javafx.event.Event;
@@ -24,6 +24,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import model.characters.Explorer;
 import model.characters.Fighter;
 import model.characters.Hero;
@@ -53,7 +54,7 @@ public class ChooseHeroScene{
        
         medicDropShadow.setOffsetY(3.0f);
         medicDropShadow.setRadius(30);
-       	medicDropShadow.setColor(Color.web("#ffff00"));
+       	medicDropShadow.setColor(Color.web("#00ff00"));
 
         explDropShadow.setOffsetY(3.0f);
         explDropShadow.setRadius(30);
@@ -103,7 +104,7 @@ public class ChooseHeroScene{
 
 
         Label medicTitle = new Label("Medic");
-        medicTitle.setStyle(" -fx-text-fill: #ffff00;");
+        medicTitle.setStyle(" -fx-text-fill: #00ff00;");
         medicTitle.setFont(Main.font2);
         medicTitle.setEffect(medicDropShadow);
 
@@ -225,11 +226,34 @@ public class ChooseHeroScene{
             hero.setOnMouseClicked(e);
             hero.setOnMouseEntered(e2);
             hero.setOnMouseExited(e3);
-            
+
+       
         }
+        
+        Label back = new Label("Back");
+        back.setFont(Main.font6);
+        back.setTextFill(Paint.valueOf("#ff4500"));
+        back.setOnMouseClicked(new EventHandler<Event>(){
+
+            @Override
+            public void handle(Event arg0) {
+                StartScene.setup_starting_scene();
+                Main.primaryStage.setScene(StartScene.startScene);
+                // Main.primaryStage.setFullScreen(true);
+                // Main.primaryStage.setFullScreenExitHint("");
+                // String path = Main.csvPath + "\\resources\\changingTabs.mp3";
+                // Media media = new Media(new File(path).toURI().toString());
+                // MediaPlayer mediaPlayer = new MediaPlayer(media);
+                // mediaPlayer.setAutoPlay(true);
+            }
+        });
+
+        back.setOnMouseEntered(Main.e);
+        back.setOnMouseExited(Main.e2);
+            
 
         types.getChildren().addAll( medicTitle, medic , explorerTitle, explorer, fighterTitle ,fighter);
-        content.getChildren().addAll(types, info);
+        content.getChildren().addAll(types, info, back);
         heroes.getChildren().addAll(content);
     }
 }

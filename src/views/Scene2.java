@@ -7,6 +7,7 @@ import engine.Game;
 import exceptions.GameActionException;
 import javafx.animation.PauseTransition;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import model.characters.Direction;
 import model.characters.Explorer;
 import model.characters.Fighter;
@@ -18,11 +19,11 @@ import model.collectibles.Vaccine;
 import model.world.Cell;
 import model.world.CharacterCell;
 import model.world.CollectibleCell;
-import model.world.TrapCell;
+
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -33,6 +34,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+
 import javafx.util.Duration;
 
 public class Scene2 {
@@ -41,8 +43,8 @@ public class Scene2 {
     public static Character chosenTarget;
     
     public static HBox root2 = new HBox();
-    public static GridPane grid = new GridPane();
     public static VBox vbox = new VBox();
+    public static GridPane grid = new GridPane();
     public static Scene scene2 = new Scene(root2, 1300, 680);
 
     public static Label info = new Label();
@@ -51,19 +53,37 @@ public class Scene2 {
     public static Button[][] map = new Button[15][15];
     public static Label[] allHeroInfo = new Label[6];
 
-    public static HBox first2Heroes = new HBox();
-    public static HBox second2Heroes = new HBox();
+    public static HBox first2Heroes = new HBox(30);
+    public static HBox second2Heroes = new HBox(30);
 
     public static ArrayList<Hero> heroesAttacked = new ArrayList<Hero>();
 
     public static int animationdirectionCounter = 0;
     public static String characterButtonColor;
+    public static String[] heroColors = new String[8];
+
+    public static String path1 = Main.csvPath + "\\resources\\collectibles.mp3";
+    public static Media media1 = new Media(new File(path1).toURI().toString());
+    public static MediaPlayer mediaPlayer1 = new MediaPlayer(media1);
+
+    public static String path2 = Main.csvPath + "\\resources\\deadNotification.mp3";
+    public static Media media2 = new Media(new File(path2).toURI().toString());
+    public static MediaPlayer mediaPlayer2 = new MediaPlayer(media2);
+
+    public static String path3 = Main.csvPath + "\\resources\\trap.mp3";
+    public static Media media3 = new Media(new File(path3).toURI().toString());
+    public static MediaPlayer mediaPlayer3 = new MediaPlayer(media3);
+
+    public static String path4 = Main.csvPath + "\\resources\\punch.mp3";
+    public static Media media4 = new Media(new File(path4).toURI().toString());
+    public static MediaPlayer mediaPlayer4 = new MediaPlayer(media4);
 
     public static void draw() {
 
         info.setText("");
         errors.setText("");
-          
+        grid.setPrefHeight(scene2.getHeight());
+
         
         
         // place appropriate image on each button in the map
@@ -75,6 +95,7 @@ public class Scene2 {
 				ImageView view;
 				
 				if(Game.map[14-i][j].isVisible()) {
+                    map[i][j].setStyle("-fx-background-color: #ffffff; -fx-border-color: #000000; -fx-border-width: 1px;");
 					if(Game.map[14-i][j] instanceof CollectibleCell) {
 						if(((CollectibleCell)(Game.map[14-i][j])).getCollectible() instanceof Vaccine) {
 							img = new Image(Main.resPath + "vaccine.png");
@@ -84,35 +105,37 @@ public class Scene2 {
 					}else if(Game.map[14-i][j] instanceof CharacterCell){
 						if(((CharacterCell)(Game.map[14-i][j])).getCharacter() instanceof Zombie) {
 							img = new Image(Main.resPath + "zombie.png");
+                            
 						}else if(((CharacterCell)(Game.map[14-i][j])).getCharacter() instanceof Hero){
                                 img = new Image(Main.resPath + "heroes\\"+ ((CharacterCell)(Game.map[14-i][j])).getCharacter().getName() + ".png");
                             if((Hero)(((CharacterCell)(Game.map[14-i][j])).getCharacter()) instanceof Medic){
-                                characterButtonColor = "yellow";
-                                map[i][j].setStyle("-fx-background-color: #ffff00");
+                                characterButtonColor = "lime";
+                                map[i][j].setStyle("-fx-background-color: #00ff00;-fx-border-color: #000000; -fx-border-width: 1px;");
                             }else if((Hero)(((CharacterCell)(Game.map[14-i][j])).getCharacter()) instanceof Explorer){
                                 characterButtonColor = "blue";
-                                map[i][j].setStyle("-fx-background-color: #0000ff");
+                                map[i][j].setStyle("-fx-background-color: #0000ff;-fx-border-color: #000000; -fx-border-width: 1px;");
                             }else if((Hero)(((CharacterCell)(Game.map[14-i][j])).getCharacter()) instanceof Fighter){
                                 characterButtonColor = "orange";
-                                map[i][j].setStyle("-fx-background-color: #ffa500");
+                                map[i][j].setStyle("-fx-background-color: #ffa500;-fx-border-color: #000000; -fx-border-width: 1px;");
                             }
 						}
+
 					 }
                     //  else if(Game.map[14-i][j] instanceof TrapCell) { //remove b4 submission
 					// 	// img = new Image(Main.resPath + "trap.png");
 					// }
 				}else {
-					img = new Image(Main.resPath + "mystery.png");
+					// img = new Image(Main.resPath + "mystery.png");
+                    map[i][j].setStyle("-fx-background-color: #000000; -fx-border-color: #ffffff; -fx-border-width: 1px;");
 				}
 
 				view = new ImageView(img);
-				view.setFitWidth(45);
+				view.setFitWidth(40);
 				view.setFitHeight(35);
 				map[i][j].setGraphic(view);
-				map[i][j].setPrefSize(45, 35);
-
-
-                     // event for setting target
+				map[i][j].setPrefSize(45, scene2.getHeight()/15);
+                
+                // event for setting target
 
 				map[i][j].setOnMouseClicked(event ->
                 {
@@ -128,8 +151,12 @@ public class Scene2 {
                                 
                                 String zombieInfo = "Zombie Name: " + ((CharacterCell)(cell)).getCharacter().getName() +
                                 "\nZombie Damage: " + ((CharacterCell)(cell)).getCharacter().getAttackDmg() +
-                                "\nZombie Health: "  ;
-                                info.setText(zombieInfo);
+                                "\nZombie Health: " + ((CharacterCell)(cell)).getCharacter().getCurrentHp();
+                                if(cell.isVisible()){
+                                    info.setText(zombieInfo);
+                                    info.setStyle("-fx-text-fill: #ff0000");
+                                }
+                        
                             }else if(((CharacterCell)(cell)).getCharacter() instanceof Hero) {
                                 chosenHero = (Hero)(((CharacterCell)(cell)).getCharacter());
                                 getAllHeroesInfo();
@@ -149,8 +176,8 @@ public class Scene2 {
 			}
 		}
 
-        playAnimations();
         getAllHeroesInfo();
+        playAnimations();
         
         // Adding all the elements to the vbox
 
@@ -162,23 +189,23 @@ public class Scene2 {
             vbox.getChildren().add(second2Heroes);
         if(!vbox.getChildren().contains(errors))
 			vbox.getChildren().add(errors);
+        
+        
+        
+        vbox.setStyle("-fx-background-color: #000000; -fx-background-radius: 10px; -fx-padding: 10px;");    
 	}
 
     public static void playAnimations() {
         if(animationdirectionCounter == 2){
             animationdirectionCounter = 0;
-            String path = Main.csvPath + "\\resources\\collectibles.mp3";
-            Media media = new Media(new File(path).toURI().toString());
-            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            
             // mediaPlayer.setVolume(ControlsScene.newVolume/100);
-            mediaPlayer.setAutoPlay(true);
+            mediaPlayer1.setAutoPlay(true);
         }else if(animationdirectionCounter == 3){
             animationdirectionCounter = 0;
-            String path = Main.csvPath + "\\resources\\deadNotification.mp3";
-            Media media = new Media(new File(path).toURI().toString());
-            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            
             // mediaPlayer.setVolume(ControlsScene.newVolume/100);
-            mediaPlayer.setAutoPlay(true);
+            mediaPlayer2.setAutoPlay(true);
 
             if(Game.heroes.size()>0){
                 chosenHero = Game.heroes.get(0);
@@ -188,11 +215,9 @@ public class Scene2 {
             animationdirectionCounter = 0;
             Button b = map[14-chosenHero.getLocation().x][chosenHero.getLocation().y];
             animateEffect(b, 0.3, "red");
-            String path = Main.csvPath + "\\resources\\trap.mp3";
-            Media media = new Media(new File(path).toURI().toString());
-            MediaPlayer mediaPlayer = new MediaPlayer(media);
+
             // mediaPlayer.setVolume(ControlsScene.newVolume/100);
-            mediaPlayer.setAutoPlay(true);
+            mediaPlayer3.setAutoPlay(true);
 
         }else if(animationdirectionCounter == 5 && chosenTarget != null){
             animationdirectionCounter = 0;
@@ -201,37 +226,33 @@ public class Scene2 {
 
             Button b2 = map[14-chosenTarget.getLocation().x][chosenTarget.getLocation().y];
             animateEffect(b2, 0.3, "red");
-            String path = Main.csvPath + "\\resources\\punch.mp3";
-            Media media = new Media(new File(path).toURI().toString());
-            MediaPlayer mediaPlayer = new MediaPlayer(media);
+
             // mediaPlayer.setVolume(ControlsScene.newVolume/100);
-            mediaPlayer.setAutoPlay(true);
+            mediaPlayer4.setAutoPlay(true);
 
         }else if(animationdirectionCounter == 6){
             animationdirectionCounter = 0;
             Button b = map[14-chosenTarget.getLocation().x][chosenTarget.getLocation().y];
-            animateEffect(b, 0.3, "green"); 
+            animateEffect(b, 0.3, "yellow"); 
         }
         else if(animationdirectionCounter == 9){
             animationdirectionCounter = 0;
             for(int i = 0 ; i<heroesAttacked.size();i++){
 
 
+                
+
                 Button b = map[14-heroesAttacked.get(i).getLocation().x][heroesAttacked.get(i).getLocation().y];
                 animateEffect(b, 0.3, "red"); 
 
-                String path = Main.csvPath + "\\resources\\punch.mp3";
-                Media media = new Media(new File(path).toURI().toString());
-                MediaPlayer mediaPlayer = new MediaPlayer(media);
-                mediaPlayer.setAutoPlay(true);
+               
+                mediaPlayer4.setAutoPlay(true);
 
             // Button b2 = map[14-heroesAttacked.get(i).getTarget().getLocation().x][heroesAttacked.get(i).getTarget().getLocation().y];
             // animateEffect(b2, 0.3, "red");
             // mediaPlayer.setVolume(ControlsScene.newVolume/100);
-                heroesAttacked.remove(i);
-
             }
-
+           heroesAttacked =  new ArrayList<Hero>();
         }
     }
 
@@ -249,8 +270,23 @@ public class Scene2 {
         first2Heroes.getChildren().clear();
         second2Heroes.getChildren().clear();
 
+        for(int i = 0; i < Game.heroes.size(); i++){
+            if(Game.heroes.get(i) instanceof Medic){
+                heroColors[i] = "lime";
+            }else if(Game.heroes.get(i) instanceof Explorer){
+                heroColors[i] = "blue";
+            }else{
+                heroColors[i] = "orange";
+            }
+        }
 
-
+        if(chosenHero instanceof Medic){
+            characterButtonColor = "lime";
+        }else if(chosenHero instanceof Explorer){
+            characterButtonColor = "blue";
+        }else{
+            characterButtonColor = "orange";
+        }
 
         // Chosen Hero Info
 
@@ -265,6 +301,7 @@ public class Scene2 {
                             "\nVaccines: " + chosenHero.getVaccineInventory().size() 
                             ;
         info.setText(heroInfo);
+        info.setStyle("-fx-text-fill: "+ characterButtonColor +";");
 
         // All Heroes Info
 
@@ -278,6 +315,7 @@ public class Scene2 {
 
                 allHeroInfo[i] = new Label(heroInfo);
                 allHeroInfo[i].setFont(Main.font4);
+                allHeroInfo[i].setStyle("-fx-background-color: #ffffff; -fx-background-radius: 10px; -fx-padding: 10px; -fx-text-fill: "+ heroColors[i] +";");
                 if(heroIndex < 2){
                     first2Heroes.getChildren().add(allHeroInfo[i]);
                     
@@ -294,11 +332,16 @@ public class Scene2 {
         root2.getChildren().clear();
         root2.setSpacing(10);
         vbox.setSpacing(20);
+        vbox.setPrefWidth(400);
+        vbox.setPrefHeight(scene2.getHeight()-300);
+        // vbox.setPadding(new Insets(10, 10, 10, 10));
+        
+
         root2.getChildren().addAll(grid, vbox);
         Game.startGame(chosenHero);
 
         info.setFont(Main.font3);
-        errors.setFont(Main.font4);
+        errors.setFont(Main.font9);
 
    
 
@@ -353,16 +396,11 @@ public class Scene2 {
                     }else if(ke.getCode() == KeyCode.E){
                         Game.endTurn();
                         for(int i = 0; i < Game.heroes.size(); i++){
-                            if(heroHp.get(i) != Game.heroes.get(i).getCurrentHp()){
-                                
-
+                            if(heroHp.get(i) != Game.heroes.get(i).getCurrentHp()){                        
                                 heroesAttacked.add(Game.heroes.get(i));
-
                                 animationdirectionCounter = 9;
                             }
-
                          }
-                         
                         grid.getChildren().clear();
                         ke.consume();
                     }else if(ke.getCode() == KeyCode.C){
@@ -381,7 +419,6 @@ public class Scene2 {
                     if(chosenHero.getCurrentHp() <= 0){
                         animationdirectionCounter = 3;
                     }
-
                     if(Game.checkGameOver()){
                         GameOverScene.setup_gameOverScene();
                         Main.primaryStage.setScene(GameOverScene.gameOverScene);
@@ -392,11 +429,10 @@ public class Scene2 {
                         Main.primaryStage.setScene(WinScene.winScene);
                         return;
                     }
-                    
                     draw();
-                    
                 }catch(GameActionException e) {
-                    errors.setText("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" + e.getMessage());
+                    errors.setText("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" + e.getMessage());
+                    errors.setStyle("-fx-text-fill: #ff1493;");
                 }
             }
         });

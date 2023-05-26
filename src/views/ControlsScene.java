@@ -1,13 +1,13 @@
 package views;
 
-import java.io.File;
+
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.effect.DropShadow;
@@ -19,8 +19,7 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
@@ -90,6 +89,12 @@ public class ControlsScene {
         volume.valueProperty().addListener((observable, oldValue, newValue) -> {
             volText.setText("Volume: " + newValue.intValue());
             Main.mediaPlayer.setVolume(newValue.intValue() / 100.0);
+            Main.mediaPlayer1.setVolume(newValue.intValue() / 100.0);
+            ChooseHeroScene.mediaPlayer.setVolume(newValue.intValue() / 100.0);
+            Scene2.mediaPlayer1.setVolume(newValue.intValue() / 100.0);
+            Scene2.mediaPlayer2.setVolume(newValue.intValue() / 100.0);
+            Scene2.mediaPlayer3.setVolume(newValue.intValue() / 100.0);
+            Scene2.mediaPlayer4.setVolume(newValue.intValue() / 100.0);
             newVolume = newValue.intValue();
         });
 
