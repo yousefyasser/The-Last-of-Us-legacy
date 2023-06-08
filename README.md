@@ -1,5 +1,17 @@
 # The-Last-of-Us-legacy, CSEN401 project
 
+![alt text](https://github.com/yousefyasser/The-Last-of-Us-legacy/blob/main/screenshots/start.png?raw=true)
+
+![alt text](https://github.com/yousefyasser/The-Last-of-Us-legacy/blob/main/screenshots/rules.png?raw=true)
+
+![alt text](https://github.com/yousefyasser/The-Last-of-Us-legacy/blob/main/screenshots/credits.png?raw=true)
+
+![alt text](https://github.com/yousefyasser/The-Last-of-Us-legacy/blob/main/screenshots/chooseHero.png?raw=true)
+
+![alt text](https://github.com/yousefyasser/The-Last-of-Us-legacy/blob/main/screenshots/gamePlay.png?raw=true)
+
+
+# Game Description
 ```
 The Last of Us: Legacy is a single player survival game set in a zombie apocalyptic world.
 The game is conducted in a turn based manner, in which each player character receives a specific number of action points per turn, which they can use to move, attack or cure zombies, or use special actions.
