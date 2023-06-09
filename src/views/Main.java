@@ -22,12 +22,14 @@ import javafx.util.Duration;
 
 
 public class Main extends Application {
-	public static final String csvPath = "C:\\Users\\OS\\Desktop\\The-Last-of-Us-legacy-main\\src\\engine\\";
-	public static final String resPath = "file:\\" + csvPath + "resources\\";
+	public static final String csvPath = ".\\engine\\";
+	public static final String resPath = "file:" + csvPath + "resources\\";
 	public static Stage primaryStage;
+
 	public static String path = csvPath + "\\resources\\startsceneSelect.wav";
 	public static Media media = new Media(new File(path).toURI().toString());
 	public static MediaPlayer mediaPlayer = new MediaPlayer(media);
+
 	public static String path1 = csvPath + "\\resources\\The Last of Us Theme.mp3";
 	public static Media media1 = new Media(new File(path1).toURI().toString());
 	public static MediaPlayer mediaPlayer1 = new MediaPlayer(media1);
@@ -41,6 +43,7 @@ public class Main extends Application {
 	public static Font font7 = Font.loadFont(Main.resPath + "MK4.TTF", 90);
 	public static Font font8 = Font.loadFont(Main.resPath + "MK4.TTF", 70);
 	public static Font font9 = Font.loadFont(Main.resPath + "mk2.ttf", 15);
+
 	public static EventHandler<Event> e;
 	public static EventHandler<Event> e2;
 
@@ -96,21 +99,6 @@ public class Main extends Application {
 
 			StartScene.setup_starting_scene();
 			primaryStage.setScene(StartScene.startScene);
-
-			// ChooseHeroScene.setup_chooseHeroScene();
-			// primaryStage.setScene(ChooseHeroScene.chooseHeroScene);
-
-			// DO NOT RUN SCENE 2 DIRECTLY
-
-			// WinScene.setup_winScene();
-			// primaryStage.setFullScreen(true);
-			// primaryStage.setScene(WinScene.winScene);
-
-			// GameOverScene.setup_gameOverScene();
-			// primaryStage.setScene(GameOverScene.gameOverScene);
-			
-			// primaryStage.setFullScreen(true);
-			// primaryStage.setFullScreenExitHint("");
 
 			primaryStage.show();
 		} catch(Exception e) {
